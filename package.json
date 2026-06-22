@@ -1,0 +1,7 @@
+{
+  "name": "gep-website",
+  "private": true,
+  "scripts": {
+    "build": "cd Implementation && npm run build"
+  }
+}
