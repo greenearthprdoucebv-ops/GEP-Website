@@ -1,5 +1,6 @@
 .legal-page {
   width: 100%;
+  padding-top: 72px;
   background: #f3f4f6;
   color: #374151;
   text-align: left;
@@ -16,7 +17,7 @@
   margin: 0 0 0.4rem;
   font-size: clamp(1.75rem, 3.5vw, 2.5rem);
   font-weight: 700;
-  color: #0b7a57;
+  color: var(--gep-green);
   line-height: 1.15;
 }
 
@@ -68,7 +69,7 @@
 }
 
 .legal-page__link {
-  color: #0b7a57;
+  color: var(--gep-green);
   text-decoration: underline;
   text-underline-offset: 2px;
 }

@@ -8,6 +8,9 @@
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
+  --gep-green: #2ecc8a;
+  --gep-green-dark: #27b87c;
+  --gep-green-soft: rgba(46, 204, 138, 0.12);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 

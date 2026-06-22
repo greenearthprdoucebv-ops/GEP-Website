@@ -39,13 +39,6 @@ export function Imprint() {
         </section>
 
         <section className="legal-page__section">
-          <h2 className="legal-page__section-title">Legal Representative</h2>
-          <p className="legal-page__text">
-            Shareholder & CEO: <em>Min Zhang</em>
-          </p>
-        </section>
-
-        <section className="legal-page__section">
           <h2 className="legal-page__section-title">Responsible for Content</h2>
           <p className="legal-page__text">
             GreenEarth Produce<br />

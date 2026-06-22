@@ -77,23 +77,23 @@
 }
 
 .about-btn--primary {
-    background: #117a52;
+    background: var(--gep-green);
     color: #ffffff;
 }
 
 .about-btn--secondary {
     background: transparent;
-    color: #117a52;
-    border-color: #8bc53f;
+    color: var(--gep-green);
+    border-color: var(--gep-green);
 }
 
 .about-btn--accent {
-    background: #8bc53f;
+    background: var(--gep-green);
     color: #ffffff;
 }
 
 .about-btn:focus-visible {
-    outline: 2px solid #8bc53f;
+    outline: 2px solid var(--gep-green);
     outline-offset: 2px;
 }
 

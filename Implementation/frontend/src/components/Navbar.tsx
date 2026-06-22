@@ -53,8 +53,8 @@ export default function Navbar() {
         </Link>
 
         <ul className="nav-links">
-          <li><Link to="/Catalogue">Catalogue</Link></li>
           <li><Link to="/About">About</Link></li>
+          <li><Link to="/Catalogue">Products</Link></li>
           <li><Link to="/Contact">Contact</Link></li>
         </ul>
 
@@ -71,8 +71,8 @@ export default function Navbar() {
       </nav>
 
       <div className={`nav-drawer${menuOpen ? ' nav-drawer--open' : ''}`} aria-hidden={!menuOpen}>
-        <Link to="/Catalogue" onClick={closeMenu}>Catalogue</Link>
         <Link to="/About" onClick={closeMenu}>About</Link>
+        <Link to="/Catalogue" onClick={closeMenu}>Products</Link>
         <Link to="/Contact" onClick={closeMenu}>Contact</Link>
       </div>
 

@@ -23,7 +23,7 @@ type VercelResponse = {
 }
 
 const DEFAULT_RESEND_FROM = 'Green Earth Produce <contact@greenearthproducebv.eu>'
-const DEFAULT_CONTACT_EMAIL_TO = 'greenearthprdoucebv@gmail.com'
+const DEFAULT_CONTACT_EMAIL_TO = 'info@greenearthproduce.nl'
 const SUBJECT_OPTIONS = [
   'Product inquiry',
   'Wholesale pricing',

@@ -279,7 +279,7 @@
 
 /* —— Product catalogue (full-width) —— */
 .catalogue-page {
-  background: #ebe8de;
+  background: #ffffff;
   color: #2b2b2b;
   text-align: left;
 }
@@ -444,10 +444,10 @@
   align-items: center;
   justify-content: center;
   min-height: 38px;
-  padding: 0 16px;
+  padding: 0 18px;
   border-radius: 10px;
   border: 1px solid transparent;
-  background: #18733e;
+  background: var(--gep-green);
   color: #ffffff;
   font-size: 0.84rem;
   font-weight: 600;
@@ -461,11 +461,11 @@
 
 .catalogue-card__btn:hover {
   transform: translateY(-1px);
-  background: #16693a;
+  background: var(--gep-green-dark);
 }
 
 .catalogue-card__btn:focus-visible {
-  outline: 2px solid #18733e;
+  outline: 2px solid var(--gep-green);
   outline-offset: 2px;
 }
 
@@ -653,18 +653,19 @@
 
 .product-modal__qty-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(140px, 1fr));
   gap: 0.5rem 0.65rem;
 }
 
 .product-modal__qty-btn {
   margin: 0;
-  padding: 0.55rem 0.65rem;
+  min-width: 140px;
+  padding: 0.75rem 0.85rem;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   background: #fff;
   color: #111827;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
@@ -681,19 +682,19 @@
 }
 
 .product-modal__qty-btn:focus-visible {
-  outline: 2px solid #2d7d46;
+  outline: 2px solid var(--gep-green);
   outline-offset: 2px;
 }
 
 .product-modal__qty-btn--selected {
-  background: #347d52;
-  border-color: #347d52;
+  background: var(--gep-green);
+  border-color: var(--gep-green);
   color: #fff;
 }
 
 .product-modal__qty-btn--selected:hover {
-  background: #2d6b47;
-  border-color: #2d6b47;
+  background: var(--gep-green-dark);
+  border-color: var(--gep-green-dark);
 }
 
 .product-modal__summary {
@@ -724,7 +725,7 @@
   padding: 0.85rem 1rem;
   border: none;
   border-radius: 8px;
-  background: #2d7d46;
+  background: var(--gep-green);
   color: #fff;
   font-size: 1rem;
   font-weight: 700;
@@ -738,10 +739,11 @@
 
 .product-modal__cta:hover {
   filter: brightness(1.05);
+  background: var(--gep-green-dark);
 }
 
 .product-modal__cta:focus-visible {
-  outline: 2px solid #1e4d2f;
+  outline: 2px solid var(--gep-green);
   outline-offset: 3px;
 }
 

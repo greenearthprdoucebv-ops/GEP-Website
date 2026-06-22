@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
+import { uploadStorageFile } from '../../lib/storage'
+import { productImageUrl, resolveAssetUrl } from '../../lib/productImage'
 import './Admin.css'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -93,6 +95,7 @@ function HeroSection() {
   const [modal, setModal]     = useState<{ mode: 'add' | 'edit'; row: Partial<HomeHero> } | null>(null)
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [saving, setSaving]   = useState(false)
+  const [uploadingVideo, setUploadingVideo] = useState(false)
   const [err, setErr]         = useState('')
 
   async function load() {
@@ -103,6 +106,18 @@ function HeroSection() {
   }
 
   useEffect(() => { load() }, [])
+
+  async function uploadVideo(file: File) {
+    setErr('')
+    setUploadingVideo(true)
+    const { error, path } = await uploadStorageFile(file)
+    setUploadingVideo(false)
+    if (error) {
+      setErr(error.message)
+      return null
+    }
+    return path
+  }
 
   async function save() {
     if (!modal) return
@@ -189,7 +204,7 @@ function HeroSection() {
             />
           </label>
           <label className="admin-field">
-            <span>Video URL (.mp4)</span>
+            <span>Video URL or Upload</span>
             <input
               type="url"
               value={modal.row.video_url ?? ''}
@@ -197,9 +212,23 @@ function HeroSection() {
               placeholder="https://…/hero.mp4"
             />
           </label>
+          <label className="admin-field">
+            <span>Upload Video</span>
+            <input
+              type="file"
+              accept="video/mp4"
+              onChange={async e => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                const path = await uploadVideo(file)
+                if (path) setModal(m => m ? { ...m, row: { ...m.row, video_url: path } } : m)
+              }}
+            />
+            {uploadingVideo ? <p>Uploading video…</p> : null}
+          </label>
           {modal.row.video_url && (
             <div className="admin-video-preview">
-              <video src={modal.row.video_url} controls muted />
+              <video src={resolveAssetUrl(modal.row.video_url)} controls muted />
             </div>
           )}
         </Modal>
@@ -224,6 +253,7 @@ function HomeProductsSection() {
   const [modal, setModal]       = useState<{ mode: 'add' | 'edit'; row: Partial<HomeProduct> } | null>(null)
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const [saving, setSaving]     = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
   const [err, setErr]           = useState('')
 
   async function load() {
@@ -241,6 +271,18 @@ function HomeProductsSection() {
 
   function setField<K extends keyof HomeProduct>(key: K, val: HomeProduct[K]) {
     setModal(m => m ? { ...m, row: { ...m.row, [key]: val } } : m)
+  }
+
+  async function uploadImage(file: File) {
+    setErr('')
+    setUploadingImage(true)
+    const { error, path } = await uploadStorageFile(file)
+    setUploadingImage(false)
+    if (error) {
+      setErr(error.message)
+      return null
+    }
+    return path
   }
 
   async function save() {
@@ -343,12 +385,30 @@ function HomeProductsSection() {
             <input type="text" value={modal.row.origin ?? ''} onChange={e => setField('origin', e.target.value)} placeholder="Shandong, China" />
           </label>
           <label className="admin-field">
-            <span>Image URL</span>
+            <span>Image URL or Upload</span>
             <input type="url" value={modal.row.image_url ?? ''} onChange={e => setField('image_url', e.target.value)} placeholder="https://…/image.jpg" />
+          </label>
+          <label className="admin-field">
+            <span>Upload Image</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async e => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                const path = await uploadImage(file)
+                if (path) setField('image_url', path)
+              }}
+            />
+            {uploadingImage ? <p>Uploading image…</p> : null}
           </label>
           {modal.row.image_url && (
             <div className="admin-img-preview">
-              <img src={modal.row.image_url} alt="Preview" onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }} />
+              <img
+                src={productImageUrl(modal.row.image_url)}
+                alt="Preview"
+                onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+              />
             </div>
           )}
           <label className="admin-field">
@@ -558,6 +618,7 @@ function CatalogueSection() {
   const [modal, setModal]       = useState<{ mode: 'add' | 'edit'; row: Partial<CatalogueProduct> } | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [saving, setSaving]     = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
   const [err, setErr]           = useState('')
 
   async function load() {
@@ -575,6 +636,18 @@ function CatalogueSection() {
 
   function setField<K extends keyof CatalogueProduct>(key: K, val: CatalogueProduct[K]) {
     setModal(m => m ? { ...m, row: { ...m.row, [key]: val } } : m)
+  }
+
+  async function uploadImage(file: File) {
+    setErr('')
+    setUploadingImage(true)
+    const { error, path } = await uploadStorageFile(file)
+    setUploadingImage(false)
+    if (error) {
+      setErr(error.message)
+      return null
+    }
+    return path
   }
 
   async function save() {
@@ -701,12 +774,30 @@ function CatalogueSection() {
             </select>
           </label>
           <label className="admin-field">
-            <span>Image URL</span>
+            <span>Image URL or Upload</span>
             <input type="url" value={modal.row.image_url ?? ''} onChange={e => setField('image_url', e.target.value)} placeholder="https://…/image.jpg" />
+          </label>
+          <label className="admin-field">
+            <span>Upload Image</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async e => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                const path = await uploadImage(file)
+                if (path) setField('image_url', path)
+              }}
+            />
+            {uploadingImage ? <p>Uploading image…</p> : null}
           </label>
           {modal.row.image_url && (
             <div className="admin-img-preview">
-              <img src={modal.row.image_url} alt="Preview" onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }} />
+              <img
+                src={productImageUrl(modal.row.image_url)}
+                alt="Preview"
+                onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+              />
             </div>
           )}
         </Modal>

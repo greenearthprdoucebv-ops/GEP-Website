@@ -40,7 +40,7 @@ function IconFacebook() {
 export function Footer() {
   return (
   
-    <footer className="site-footer" aria-label="Site footer" style={{ backgroundColor: '#2ecc8a' }} >
+    <footer className="site-footer" aria-label="Site footer" style={{ backgroundColor: 'var(--gep-green)' }} >
       <div className="site-footer__inner" style={{ 
         display: 'flex', 
         gap: '48px', 
@@ -132,6 +132,19 @@ export function Footer() {
             <li>
               <Link className="site-footer__link" to="/imprint" style={{ color: '#fff' }}>
                 Imprint
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        <nav className="site-footer__col" aria-labelledby="site-footer-admin" style={{ flex: '1 1 auto' }}>
+          <h2 id="site-footer-admin" className="site-footer__heading">
+            Admin
+          </h2>
+          <ul className="site-footer__list" style={{ paddingLeft: 0, listStyle: 'none' }}>
+            <li>
+              <Link className="site-footer__link" to="/admin" style={{ color: '#fff' }}>
+                Admin Portal
               </Link>
             </li>
           </ul>

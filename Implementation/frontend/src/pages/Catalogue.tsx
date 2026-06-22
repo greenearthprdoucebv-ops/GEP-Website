@@ -4,6 +4,7 @@ import { ProductDetailModal, type ProductModalData } from '../components/Product
 import { availabilityModifier } from '../lib/productMeta'
 import { productImageUrl } from '../lib/productImage'
 import { supabase, supabaseConfigError } from '../lib/supabase'
+import chineseGingerImg from '../assets/about/img1.png'
 
 type Product = ProductModalData & {
   weight: string
@@ -180,7 +181,7 @@ export function Catalogue() {
               <div className="catalogue-card__media">
                 <img
                   className="catalogue-card__img"
-                  src={productImageUrl(p.image_url)}
+                  src={p.image_url ? productImageUrl(p.image_url) : (p.title.toLowerCase().includes('chinese ginger') ? chineseGingerImg : productImageUrl(null))}
                   alt={p.title}
                   width={800}
                   height={520}

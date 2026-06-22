@@ -90,17 +90,15 @@ export function About() {
                     <h1>About GreenEarth Produce</h1>
 
                     <p>
-                        GreenEarth Produce is a Venlo-based company active in the fresh
-                        fruit and vegetable sector. The company focuses on sourcing and
-                        distributing quality produce while building reliable connections
-                        between growers, suppliers, and customers.
+                        Green Earth Produce B.V. was established in Venlo, the Netherlands, with a strong focus on fresh ginger. Our team brings nearly 30 years of experience in the ginger industry, covering cultivation, sourcing, processing, packaging, distribution, and international trade.
                     </p>
 
                     <p>
-                        Our goal is to support a consistent and efficient produce flow
-                        from origin to market. By combining product knowledge, supply
-                        chain coordination, and a strong focus on quality, we aim to
-                        create value for both partners and customers.
+                        Over the years, we have built long-term and stable partnerships with professional growers and packing facilities in China. This enables us to supply both organic ginger and GlobalG.A.P.-certified conventional ginger that complies with EU Maximum Residue Levels (MRL) requirements.
+                    </p>
+
+                    <p>
+                        Our expertise covers the entire supply chain, including cultivation management, sourcing, production, quality control, food safety management, and international logistics.
                     </p>
 
                     <div className="about-hero__actions">
@@ -189,22 +187,15 @@ export function About() {
                     <h2>From Source to Market</h2>
 
                     <p>
-                        At GreenEarth Produce, fresh produce is more than a product category
-                        — it is a business built on coordination, timing, and trust. Our work
-                        is centered around connecting supply and demand in a way that supports
-                        quality and continuity.
+                        We work closely with carefully selected growers and production farms in China, Peru, Brazil, and Thailand. These partners operate their own ginger farms and have extensive cultivation experience and expertise.
                     </p>
 
                     <p>
-                        We operate in a market where reliability matters at every stage. From
-                        sourcing and selection to distribution and delivery, each step contributes
-                        to making sure products reach the right destination in the right condition.
+                        Our long-term partnerships enable us to ensure full traceability, consistent quality, and reliable year-round supply. We know our partners, and we trust their quality. We strongly believe that close cooperation at origin is the key to delivering premium ginger to the European market.
                     </p>
 
                     <p>
-                        By focusing on clear communication, practical processes, and strong
-                        partnerships, we contribute to an efficient and professional fresh
-                        produce network.
+                        At Green Earth Produce, we believe in keeping things simple and fresh — every day. That is a promise our customers can count on.
                     </p>
                 </div>
             </section>
@@ -271,22 +262,21 @@ export function About() {
             </section>
 
             <section className="about-section about-team">
-                <div className="about-section-heading">
-                    <h2>Our Team</h2>
-                    <p>People working behind the flow of fresh produce</p>
-                </div>
-
                 <div className="about-image-frame about-team__banner">
                     <img src={teamBannerImg} alt="GreenEarth team members smiling" />
                 </div>
 
                 <div className="about-card-grid about-team-grid about-team-grid--single">
                     <article className="about-card about-team-card about-team-card--featured">
-                        <h3>Mia Zhang</h3>
+                        <h3>Our Team</h3>
                         <p>
-                            Mia Zhang helps maintain strong customer relationships through
-                            clear communication, responsive support, and dependable service
-                            across the fresh produce flow.
+                            For over 30 years, GEP team has specialized in ginger supply chain management, building expertise that spans the entire value chain—from cultivation and sourcing to food safety, quality control, logistics, and global distribution.
+                        </p>
+                        <p>
+                            Driven by professionalism, dedication, and attention to detail, we are committed to ensuring product quality, supply stability, and operational excellence at every step.
+                        </p>
+                        <p>
+                            More than a supplier, we are a strategic supply chain solutions partner. We work closely with our customers to deliver not only premium ginger products, but also reliable, efficient, and sustainable supply chain solutions that support long-term business growth.
                         </p>
                     </article>
                 </div>

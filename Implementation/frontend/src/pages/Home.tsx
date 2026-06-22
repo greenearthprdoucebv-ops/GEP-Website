@@ -1,14 +1,38 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import cutGingerImg from '../assets/about/cutGinger.jpg'
 import chinaGingerImg from '../assets/about/China Ginger.png'
-import peruGingerImg from '../assets/about/Peru Ginger.webp'
+import chineseGingerFallbackImg from '../assets/about/img1.png'
 import GEPHeroSection from '../assets/about/GEPHeroSection.mp4'
 import { supabase } from '../lib/supabase'
-import { productImageUrl } from '../lib/productImage'
+import { productImageUrl, resolveAssetUrl } from '../lib/productImage'
+import { ProductSlideshow, type Product as SlideshowProduct } from '../components/ProductSlideshow'
 import './Home.css'
 
 function slowVideo(el: HTMLVideoElement | null) {
   if (el) el.playbackRate = 0.8
+}
+
+function isChineseGingerProduct(name: string | null | undefined) {
+  return typeof name === 'string' && name.toLowerCase().includes('chinese ginger')
+}
+
+function normalizeHomeProductOrigin(name: string | null | undefined, origin: string | null | undefined) {
+  if (isChineseGingerProduct(name)) {
+    return 'SOUTH / NORTH, CHINA'
+  }
+
+  const cleanedOrigin = origin?.trim() ?? ''
+  if (cleanedOrigin.toLowerCase().includes('china')) {
+    return 'SOUTH / NORTH, CHINA'
+  }
+
+  return cleanedOrigin
+}
+
+function getHomeProductImage(name: string | null | undefined, imageUrl: string | null | undefined) {
+  if (imageUrl) return productImageUrl(imageUrl)
+  if (isChineseGingerProduct(name)) return chineseGingerFallbackImg
+  return chinaGingerImg
 }
 
 const LeafIcon = () => (
@@ -37,75 +61,16 @@ const TruckIcon = () => (
 
 // ── Static fallbacks (used when Supabase has no data yet) ─────────────────────
 
-type Product = {
-  name: string
-  origin: string
-  image: string
-  description: string
-  keywords: string[]
-  imageLeft: boolean
-}
-
-type Review = {
-  stars: number
-  text: string
-  author: string
-  role: string
-}
-
-const STATIC_PRODUCTS: Product[] = [
-  {
-    name: 'Chinese Ginger',
-    origin: 'Shandong, China',
-    image: chinaGingerImg,
-    description: 'Grown in the fertile soils of Shandong province — bold, pungent, and aromatic. A staple for food manufacturers and spice traders worldwide.',
-    keywords: ['Organic', 'Grade A', 'Year-round supply'],
-    imageLeft: true,
-  },
-  {
-    name: 'Peru Ginger',
-    origin: 'Junín, Peru',
-    image: peruGingerImg,
-    description: 'High-altitude farms in Junín produce a milder, slightly sweet ginger — ideal for specialty food, beverage, and wellness markets.',
-    keywords: ['Mild flavor', 'Export quality', 'Seasonal harvest'],
-    imageLeft: false,
-  },
-]
-
-const STATIC_REVIEWS: Review[] = [
-  { stars: 5, text: 'Consistent quality every shipment. GreenEarth is our go-to supplier.',                  author: 'Maria L.',  role: 'Head of Procurement, FoodCo' },
-  { stars: 5, text: 'The Peru ginger opened up a whole new product line for us. Exceptional.',               author: 'James T.',  role: 'Product Developer, TeaHouse' },
-  { stars: 5, text: 'Reliable, transparent, and genuinely easy to work with.',                               author: 'Sara K.',   role: 'Operations Manager, SpiceTrade' },
-  { stars: 4, text: 'Grade A quality and fast delivery every time. Will keep ordering.',                     author: 'David R.',  role: 'Buyer, GlobalFoods' },
-  { stars: 5, text: 'Switched two years ago and never looked back. Our customers can taste the difference.', author: 'Anika K.',  role: 'Director, Specialty Foods Austria' },
-  { stars: 5, text: 'From first enquiry to final delivery — smooth, professional, no surprises.',            author: 'Thomas R.', role: 'Operations, Food Service Switzerland' },
-  { stars: 5, text: 'Year-round availability for Chinese ginger is a lifesaver for our supply chain.',       author: 'Lena D.',   role: 'Procurement, Distribution France' },
-  { stars: 4, text: 'Custom packaging made a real difference on our retail shelves. Great partner.',         author: 'Sophie F.', role: 'Category Manager, Wholesale Germany' },
-]
-
 const whyCards = [
   { icon: <LeafIcon />, title: 'Sustainable Farming',    body: 'We partner only with farms that prioritise soil health and eco-friendly practices.' },
   { icon: <CheckIcon />, title: 'Quality & Transparency', body: 'Every shipment is lab-tested and fully documented — no surprises.' },
   { icon: <TruckIcon />, title: 'Direct & Reliable',      body: 'No middlemen. Better prices, shorter lead times, direct grower relationships.' },
 ]
 
-const ReviewCard = ({ stars, text, author, role }: Review) => (
-  <div className="review-card">
-    <div className="review-card__stars">{'★'.repeat(stars)}{'☆'.repeat(5 - stars)}</div>
-    <p className="review-card__text">"{text}"</p>
-    <div className="review-card__author">
-      <span className="review-card__name">{author}</span>
-      <span className="review-card__role">{role}</span>
-    </div>
-  </div>
-)
-
 export function Home() {
   const [heroVideoUrl, setHeroVideoUrl] = useState<string>(GEPHeroSection)
-  const [heroLeadText, setHeroLeadText] = useState<string>('Premium ginger sourced directly from farms across Asia and South America.')
-  const [products, setProducts] = useState<Product[]>(STATIC_PRODUCTS)
-  const [reviews, setReviews] = useState<Review[]>(STATIC_REVIEWS)
-  const reviewsRef = useRef<HTMLDivElement>(null)
+  const [heroLeadText, setHeroLeadText] = useState<string>('THE GINGER EXPERTS - Ginger Solutions for European Markets')
+  const [products, setProducts] = useState<SlideshowProduct[]>([])
 
   useEffect(() => {
     if (!supabase) return
@@ -113,120 +78,23 @@ export function Home() {
     Promise.all([
       supabase.from('home_hero').select('video_url, lead_text').order('id', { ascending: false }).limit(1).single(),
       supabase.from('home_products').select('*').eq('is_active', true).order('sort_order'),
-      supabase.from('home_reviews').select('*').eq('is_active', true).order('sort_order'),
-    ]).then(([heroRes, productsRes, reviewsRes]) => {
-      if (heroRes.data?.video_url) setHeroVideoUrl(heroRes.data.video_url)
+    ]).then(([heroRes, productsRes]) => {
+      if (heroRes.data?.video_url) setHeroVideoUrl(resolveAssetUrl(heroRes.data.video_url))
       if (heroRes.data?.lead_text) setHeroLeadText(heroRes.data.lead_text)
 
       if (productsRes.data && productsRes.data.length > 0) {
-        const bundledImages: Record<string, string> = {
-          'Chinese Ginger': chinaGingerImg,
-          'Peru Ginger':    peruGingerImg,
-        }
         setProducts(
           productsRes.data.map((p) => ({
             name:        p.name,
-            origin:      p.origin,
-            image:       p.image_url
-              ? productImageUrl(p.image_url)
-              : (bundledImages[p.name] ?? chinaGingerImg),
+            origin:      normalizeHomeProductOrigin(p.name, p.origin),
+            image:       getHomeProductImage(p.name, p.image_url),
             description: p.description,
             keywords:    p.keywords ?? [],
             imageLeft:   p.image_left,
           })),
         )
       }
-
-      if (reviewsRes.data && reviewsRes.data.length > 0) {
-        setReviews(
-          reviewsRes.data.map((r) => ({
-            stars:  r.stars,
-            text:   r.review_text,
-            author: r.author,
-            role:   r.role,
-          })),
-        )
-      }
     })
-  }, [])
-
-  // JS-driven auto-scroll: runs continuously, pauses when user interacts
-  useEffect(() => {
-    const reviewsEl = reviewsRef.current!
-    if (!reviewsEl) return
-
-    let rafId: number
-    let paused = false
-    let resumeTimer: ReturnType<typeof setTimeout>
-    let dragging = false
-    let dragStartX = 0
-    let dragScrollStart = 0
-
-    function tick() {
-      if (!paused) {
-        reviewsEl.scrollLeft += 0.7
-        // Seamless loop: reset when the first copy has scrolled out of view
-        if (reviewsEl.scrollLeft >= reviewsEl.scrollWidth / 2) reviewsEl.scrollLeft = 0
-      }
-      rafId = requestAnimationFrame(tick)
-    }
-
-    function pause() {
-      paused = true
-      clearTimeout(resumeTimer)
-    }
-
-    function scheduleResume(ms = 1500) {
-      clearTimeout(resumeTimer)
-      resumeTimer = setTimeout(() => { paused = false }, ms)
-    }
-
-    function onMouseDown(e: MouseEvent) {
-      dragging = true
-      pause()
-      dragStartX = e.clientX
-      dragScrollStart = reviewsEl.scrollLeft
-      reviewsEl.style.cursor = 'grabbing'
-    }
-
-    function onMouseMove(e: MouseEvent) {
-      if (!dragging) return
-      reviewsEl.scrollLeft = dragScrollStart + (dragStartX - e.clientX)
-    }
-
-    function onMouseUp() {
-      if (!dragging) return
-      dragging = false
-      reviewsEl.style.cursor = 'grab'
-      scheduleResume()
-    }
-
-    // Touch: let native scroll handle movement, just pause/resume auto-scroll
-    function onTouchStart() { pause() }
-    function onTouchEnd() { scheduleResume(2000) }
-
-    // Mouse wheel: native scroll works, auto-scroll briefly pauses
-    function onWheel() { pause(); scheduleResume() }
-
-    reviewsEl.addEventListener('mousedown', onMouseDown)
-    window.addEventListener('mousemove', onMouseMove)
-    window.addEventListener('mouseup', onMouseUp)
-    reviewsEl.addEventListener('touchstart', onTouchStart, { passive: true })
-    reviewsEl.addEventListener('touchend', onTouchEnd)
-    reviewsEl.addEventListener('wheel', onWheel, { passive: true })
-
-    rafId = requestAnimationFrame(tick)
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      clearTimeout(resumeTimer)
-      reviewsEl.removeEventListener('mousedown', onMouseDown)
-      window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('mouseup', onMouseUp)
-      reviewsEl.removeEventListener('touchstart', onTouchStart)
-      reviewsEl.removeEventListener('touchend', onTouchEnd)
-      reviewsEl.removeEventListener('wheel', onWheel)
-    }
   }, [])
 
   return (
@@ -248,8 +116,8 @@ export function Home() {
         <div className="home-hero__content">
           <p className="home-hero__lead">{heroLeadText}</p>
           <div className="home-hero__actions">
-            <a href="/Catalogue" className="home-hero__btn home-hero__btn--primary">Browse Catalogue</a>
-            <a href="/Contact" className="home-hero__btn home-hero__btn--ghost">Get in Touch</a>
+            <a href="/catalogue" className="home-hero__btn home-hero__btn--primary">Browse Catalogue</a>
+            <a href="/contact" className="home-hero__btn home-hero__btn--ghost">Get in Touch</a>
           </div>
         </div>
         <div className="home-hero__scroll" aria-hidden="true">
@@ -258,36 +126,15 @@ export function Home() {
         </div>
       </section>
 
-      {/* ── Products ─────────────────────────────────────────────────────────── */}
+      {/* ── Products Slideshow ────────────────────────────────────────────── */}
       <section className="home-products">
         <div className="home-section-inner">
           <h2 className="home-section-title">Our Products</h2>
-          <div className="home-products__list">
-            {products.map((p) => (
-              <div key={p.name} className={`product-card${p.imageLeft ? '' : ' product-card--reverse'}`}>
-                <div className="product-card__img-wrap">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="product-card__img"
-                    onError={e => { (e.currentTarget as HTMLImageElement).src = chinaGingerImg }}
-                  />
-                </div>
-                <div className="product-card__body">
-                  <span className="product-card__origin">{p.origin}</span>
-                  <h3 className="product-card__name">{p.name}</h3>
-                  <p className="product-card__desc">{p.description}</p>
-                  <ul className="product-card__tags">
-                    {p.keywords.map((k) => <li key={k}>{k}</li>)}
-                  </ul>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ProductSlideshow products={products} />
         </div>
       </section>
 
-      {/* ── Why + Reviews on cutGinger background ────────────────────────────── */}
+      {/* ── Why + Certifications on cutGinger background ─────────────────────── */}
       <div className="home-ginger-bg" style={{ backgroundImage: `url(${cutGingerImg})` }}>
         <section className="home-why">
           <div className="home-section-inner">
@@ -304,15 +151,25 @@ export function Home() {
           </div>
         </section>
 
-        <section className="home-reviews">
+        <section className="home-certifications">
           <div className="home-section-inner">
-            <h2 className="home-section-title">What Clients Say</h2>
-          </div>
-          <div className="home-reviews__overflow" ref={reviewsRef}>
-            <div className="home-reviews__track" aria-label="Client reviews">
-              {reviews.map((r, i) => <ReviewCard key={i} {...r} />)}
-              <div aria-hidden="true" style={{ display: 'contents' }}>
-                {reviews.map((r, i) => <ReviewCard key={`dup-${i}`} {...r} />)}
+            <h2 className="home-section-title">Certifications & Standards</h2>
+            <div className="home-certifications__grid">
+              <div className="certification-badge">
+                <div className="certification-badge__icon">IFS</div>
+                <p className="certification-badge__text">IFS FOOD</p>
+              </div>
+              <div className="certification-badge">
+                <div className="certification-badge__icon">SKAL</div>
+                <p className="certification-badge__text">SKAL Organic</p>
+              </div>
+              <div className="certification-badge">
+                <div className="certification-badge__icon">EU</div>
+                <p className="certification-badge__text">EU Organic</p>
+              </div>
+              <div className="certification-badge">
+                <div className="certification-badge__icon">GlobalG.A.P</div>
+                <p className="certification-badge__text">GlobalG.A.P Certified</p>
               </div>
             </div>
           </div>

@@ -49,8 +49,8 @@ function prefilledFromCatalogueQuery(searchParams: URLSearchParams): {
 const contactDetails = [
   {
     label: 'Email',
-    value: 'greenearthprdoucebv@gmail.com',
-    href: 'mailto:greenearthprdoucebv@gmail.com',
+    value: 'info@greenearthproduce.nl',
+    href: 'mailto:info@greenearthproduce.nl',
     icon: <path d="M4 6h16v12H4z" />,
   },
   {
