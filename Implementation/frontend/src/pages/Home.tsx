@@ -152,8 +152,8 @@ export function Home() {
 
   // JS-driven auto-scroll: runs continuously, pauses when user interacts
   useEffect(() => {
-    const el = reviewsRef.current
-    if (!el) return
+    const reviewsEl = reviewsRef.current!
+    if (!reviewsEl) return
 
     let rafId: number
     let paused = false
@@ -164,9 +164,9 @@ export function Home() {
 
     function tick() {
       if (!paused) {
-        el.scrollLeft += 0.7
+        reviewsEl.scrollLeft += 0.7
         // Seamless loop: reset when the first copy has scrolled out of view
-        if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft = 0
+        if (reviewsEl.scrollLeft >= reviewsEl.scrollWidth / 2) reviewsEl.scrollLeft = 0
       }
       rafId = requestAnimationFrame(tick)
     }
@@ -185,19 +185,19 @@ export function Home() {
       dragging = true
       pause()
       dragStartX = e.clientX
-      dragScrollStart = el.scrollLeft
-      el.style.cursor = 'grabbing'
+      dragScrollStart = reviewsEl.scrollLeft
+      reviewsEl.style.cursor = 'grabbing'
     }
 
     function onMouseMove(e: MouseEvent) {
       if (!dragging) return
-      el.scrollLeft = dragScrollStart + (dragStartX - e.clientX)
+      reviewsEl.scrollLeft = dragScrollStart + (dragStartX - e.clientX)
     }
 
     function onMouseUp() {
       if (!dragging) return
       dragging = false
-      el.style.cursor = 'grab'
+      reviewsEl.style.cursor = 'grab'
       scheduleResume()
     }
 
@@ -208,24 +208,24 @@ export function Home() {
     // Mouse wheel: native scroll works, auto-scroll briefly pauses
     function onWheel() { pause(); scheduleResume() }
 
-    el.addEventListener('mousedown', onMouseDown)
+    reviewsEl.addEventListener('mousedown', onMouseDown)
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)
-    el.addEventListener('touchstart', onTouchStart, { passive: true })
-    el.addEventListener('touchend', onTouchEnd)
-    el.addEventListener('wheel', onWheel, { passive: true })
+    reviewsEl.addEventListener('touchstart', onTouchStart, { passive: true })
+    reviewsEl.addEventListener('touchend', onTouchEnd)
+    reviewsEl.addEventListener('wheel', onWheel, { passive: true })
 
     rafId = requestAnimationFrame(tick)
 
     return () => {
       cancelAnimationFrame(rafId)
       clearTimeout(resumeTimer)
-      el.removeEventListener('mousedown', onMouseDown)
+      reviewsEl.removeEventListener('mousedown', onMouseDown)
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', onMouseUp)
-      el.removeEventListener('touchstart', onTouchStart)
-      el.removeEventListener('touchend', onTouchEnd)
-      el.removeEventListener('wheel', onWheel)
+      reviewsEl.removeEventListener('touchstart', onTouchStart)
+      reviewsEl.removeEventListener('touchend', onTouchEnd)
+      reviewsEl.removeEventListener('wheel', onWheel)
     }
   }, [])
 
