@@ -1,0 +1,16 @@
+{
+  "name": "greenearthproduce-implementation",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm run build",
+    "contact:dev": "node scripts/contact-api-dev.mjs",
+    "dev:api": "node scripts/contact-api-dev.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.103.0",
+    "resend": "^6.12.3"
+  },
+  "devDependencies": {
+    "@vercel/node": "^5.8.3"
+  }
+}

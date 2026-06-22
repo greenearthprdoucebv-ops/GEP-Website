@@ -1,0 +1,187 @@
+/* ── Navbar ── */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 52px;
+  height: 62px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s, background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
+}
+
+.navbar.show {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(46, 204, 138, 0.1);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.navbar.solid {
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 1px 0 #eee;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.nav-logo {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.5px;
+  transition: color 0.4s;
+  text-decoration: none;
+}
+
+.nav-logo em { color: var(--white); font-style: normal; }
+.navbar.solid .nav-logo { color: var(--text); }
+
+.nav-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 34px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.8);
+  transition: color 0.3s;
+  text-decoration: none;
+}
+.nav-links a:hover { color: #2ecc8a; }
+.navbar.solid .nav-links a { color: #000 !important; text-decoration: none; }
+.navbar.solid .nav-links a:hover { color: #2ecc8a !important; }
+
+.nav-cta {
+  padding: 8px 20px;
+  border-radius: 5px;
+  background: var(--green);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 500;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.nav-cta:hover {
+  background: var(--white);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.97);
+}
+
+.navbar.always-visible {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 1px 0 #eee;
+}
+
+.navbar.always-visible .nav-logo { 
+  color: #000 !important; 
+  text-decoration: none;
+}
+
+.navbar.always-visible .nav-logo em { 
+  color: #2ecc8a !important; 
+}
+
+.navbar.always-visible .nav-links a { 
+  color: #000 !important; 
+  text-decoration: none;
+}
+
+.navbar.always-visible .nav-links a:hover { 
+  color: #2ecc8a !important; 
+}
+
+/* ── Hamburger button (hidden on desktop) ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  z-index: 310;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #0d2015;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  transform-origin: center;
+}
+
+/* White lines when nav is transparent (home hero area) */
+.navbar.show:not(.solid) .nav-hamburger span { background: #ffffff; }
+
+/* Animate to × when open */
+.nav-hamburger--open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger--open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger--open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile drawer ── */
+.nav-drawer {
+  display: none;
+  position: fixed;
+  top: 62px;
+  left: 0;
+  right: 0;
+  z-index: 299;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  flex-direction: column;
+  padding: 12px 0 20px;
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.nav-drawer--open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav-drawer a {
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0d2015;
+  text-decoration: none;
+  border-bottom: 1px solid #f0f4f2;
+  transition: color 0.2s, background 0.2s;
+}
+
+.nav-drawer a:last-child { border-bottom: none; }
+.nav-drawer a:hover { color: #2ecc8a; background: #f5fbf8; }
+
+/* Backdrop */
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 298;
+  background: rgba(0,0,0,0.25);
+}
+
+@media (max-width: 768px) {
+  .navbar { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .nav-drawer { display: flex; }
+}

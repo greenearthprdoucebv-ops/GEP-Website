@@ -1,0 +1,114 @@
+/* ── NAVBAR ── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 68px;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease,
+    box-shadow 0.4s ease, opacity 0.4s ease;
+}
+
+/* Visible state — triggered by JS after scrolling past hero */
+.navbar.scrolled {
+  opacity: 1;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Logo */
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.4s ease;
+}
+
+.navbar.scrolled .nav-logo {
+  color: var(--text);
+}
+
+/* Centred nav links */
+.nav-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #fff;
+}
+
+.navbar.scrolled .nav-links a {
+  color: var(--text);
+}
+
+.navbar.scrolled .nav-links a:hover {
+  color: var(--green-dark);
+}
+
+/* CTA button */
+.nav-cta {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  background: var(--green);
+  border: 1.5px solid var(--green);
+  color: #fff;
+  transition: background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.nav-cta:hover,
+.navbar.scrolled .nav-cta:hover {
+  background: var(--green-dark);
+  box-shadow: 0 4px 14px rgba(46, 204, 138, 0.3);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 24px;
+  }
+
+  .nav-links {
+    gap: 18px;
+  }
+
+  .nav-links li:nth-child(2) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    display: none;
+  }
+}

@@ -1,0 +1,53 @@
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── DESIGN TOKENS ── */
+:root {
+  --green:       #2ecc8a;
+  --green-dark:  #27a874;
+  --green-light: #e6f9f1;
+  --text:        #1a1a1a;
+  --muted:       #666666;
+  --bg:          #f5f4f0;
+  --white:       #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── SHARED BUTTONS ── */
+.btn {
+  padding: 11px 24px;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn-green {
+  background: var(--green);
+  border: 1.5px solid var(--green);
+  color: #fff;
+}
+.btn-green:hover {
+  background: var(--green-dark);
+  box-shadow: 0 8px 20px rgba(46,204,138,0.35);
+}
+
+/* ── SCROLL HINT ANIMATION ── */
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}

@@ -1,0 +1,11 @@
+Moodboard 1 — Description
+
+This moodboard positions ginger as a premium natural product rooted in authenticity, quality, and sustainable agricultural value. The visual selection highlights the full journey of ginger — from cultivation and harvesting to its final presentation as a refined product — reinforcing transparency and trust in its origin. The earthy brown palette reflects the raw, organic character of ginger, while the green accent represents freshness, growth, and the brand’s close connection to nature. Together, these elements create a visual identity that communicates purity, reliability, and premium product quality. Overall, the moodboard supports a brand image in which ginger is presented not simply as a commodity, but as a valuable, natural product with strong agricultural credibility and market appeal.
+
+Moodboard 2 — Description
+
+Moodboard 2 presents Green Earth Produce as a modern, trustworthy B2B supplier of ginger while keeping the brand feeling natural, fresh, and premium. The visual story focuses on the full ginger journey, showing multiple processes from harvesting and handling (hands-on field imagery) to clean product presentation (fresh roots, sliced ginger, and packaged/market-ready ginger). This helps communicate reliability in sourcing and the professionalism expected in a B2B context.
+
+The board also highlights the versatility of ginger: it appears as a raw root, cut and prepared, and indirectly as a natural wellness product through visuals that suggest everyday use (e.g., ginger tea / extracts). The intention is to signal health and natural benefits without making explicit medical claims, keeping the messaging appropriate for a business website while still associating ginger with warmth, vitality, and well-being.
+
+To implement the feedback, the updated direction uses a more vibrant green as the main brand accent to strengthen freshness and “Green Earth” identity. The palette is intentionally limited to 4–5 core colors (vibrant green + earthy browns/beige tones) to stay consistent, organic, and visually clean across website sections. Overall, the moodboard supports a website style that feels fresh, grounded, and credible, combining nature-driven visuals with a clear B2B sales impression (quality product, consistent supply, and professional presentation).

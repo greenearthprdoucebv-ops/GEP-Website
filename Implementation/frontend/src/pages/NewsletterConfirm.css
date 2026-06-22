@@ -1,0 +1,106 @@
+.newsletter-confirm {
+  min-height: calc(100vh - 160px);
+  display: grid;
+  place-items: center;
+  padding: 48px 20px;
+  background:
+    radial-gradient(circle at top, rgba(139, 197, 63, 0.18), transparent 38%),
+    linear-gradient(180deg, #f4f8f1 0%, #eef3ec 100%);
+}
+
+.newsletter-confirm__card {
+  width: min(100%, 680px);
+  padding: 40px 32px;
+  border-radius: 20px;
+  border: 1px solid rgba(17, 122, 82, 0.14);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+  text-align: center;
+}
+
+.newsletter-confirm__eyebrow {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #117a52;
+}
+
+.newsletter-confirm__title {
+  margin: 0 0 14px;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
+  color: #183425;
+}
+
+.newsletter-confirm__message {
+  margin: 0 auto;
+  max-width: 44ch;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.newsletter-confirm__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+
+.newsletter-confirm__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.newsletter-confirm__btn:hover {
+  transform: translateY(-1px);
+}
+
+.newsletter-confirm__btn--primary {
+  background: #117a52;
+  color: #ffffff;
+}
+
+.newsletter-confirm__btn--secondary {
+  border: 1px solid rgba(17, 122, 82, 0.2);
+  color: #117a52;
+  background: #ffffff;
+}
+
+.newsletter-confirm__card--success,
+.newsletter-confirm__card--already-confirmed {
+  border-color: rgba(17, 122, 82, 0.24);
+}
+
+.newsletter-confirm__card--expired,
+.newsletter-confirm__card--error {
+  border-color: rgba(180, 83, 9, 0.22);
+}
+
+@media (max-width: 640px) {
+  .newsletter-confirm {
+    padding: 32px 16px;
+  }
+
+  .newsletter-confirm__card {
+    padding: 32px 22px;
+  }
+
+  .newsletter-confirm__actions {
+    flex-direction: column;
+  }
+
+  .newsletter-confirm__btn {
+    width: 100%;
+  }
+}

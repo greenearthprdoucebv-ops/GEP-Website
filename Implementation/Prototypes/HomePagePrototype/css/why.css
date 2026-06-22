@@ -1,0 +1,78 @@
+/* ── WHY GEP SECTION ── */
+#why {
+  background: var(--bg);
+  padding: 80px 60px;
+  text-align: center;
+}
+
+#why .section-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+#why h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 500;
+  margin-bottom: 56px;
+}
+
+/* 3-column card grid */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Card — starts invisible, stagger-animates in via JS */
+.why-card {
+  background: var(--green);
+  border-radius: 16px;
+  padding: 40px 32px;
+  text-align: left;
+  color: #fff;
+  cursor: default;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+}
+.why-card.visible       { opacity: 1; transform: translateY(0); }
+.why-card.visible:hover { transform: scale(1.045); box-shadow: 0 20px 48px rgba(46,204,138,0.32); }
+
+/* Icon pill */
+.why-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(255,255,255,0.22);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.why-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.why-card p {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  opacity: 0.88;
+  font-weight: 300;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  #why { padding: 60px 24px; }
+  .why-grid { grid-template-columns: 1fr; }
+}
