@@ -2,3 +2,5 @@
 Implementation/frontend/.env.local
 .DS_Store
 Implementation/.env.local
+.vercel
+.env*

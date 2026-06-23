@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactElement } from 'react'
 import './About.css'
 import farmFamilyImg from '../assets/about/farm-family.jpg'
 import gingerHarvestImg from '../assets/about/ginger-harvest.jpeg'
@@ -47,7 +47,7 @@ function BoxIcon() {
     )
 }
 
-const VALUE_ICONS: Record<string, JSX.Element> = {
+const VALUE_ICONS: Record<string, ReactElement> = {
     leaf: <LeafIcon />,
     clock: <ClockIcon />,
     handshake: <HandshakeIcon />,
