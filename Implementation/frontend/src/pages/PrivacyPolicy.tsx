@@ -20,8 +20,8 @@ export function PrivacyPolicy() {
             The Netherlands<br />
             Phone: +31 77 206 6760<br />
             Email:{' '}
-            <a href="mailto:gep@greenearthproduce.nl" className="legal-page__link">
-             gep@greenearthproduce.nl
+            <a href="mailto:info@greenearthproduce.nl" className="legal-page__link">
+             info@greenearthproduce.nl
             </a>
           </div>
         </section>
@@ -143,8 +143,8 @@ export function PrivacyPolicy() {
           </ul>
           <p className="legal-page__text">
             To exercise any of these rights, contact us at{' '}
-            <a href="mailto:gep@greenearthproduce.nl" className="legal-page__link">
-            gep@greenearthproduce.nl
+            <a href="mailto:info@greenearthproduce.nl" className="legal-page__link">
+            info@greenearthproduce.nl
             </a>
             . We will respond within one month. In complex or high-volume cases, we may extend this period
             by a further two months; we will notify you of any such extension within the first month.
@@ -166,8 +166,8 @@ export function PrivacyPolicy() {
             We have assessed our processing activities and determined that we are not currently required to
             appoint a Data Protection Officer (DPO) under Art. 37 GDPR. Privacy-related enquiries may be
             directed to{' '}
-            <a href="mailto:gep@greenearthproduce.nl" className="legal-page__link">
-              gep@greenearthproduce.nl
+            <a href="mailto:info@greenearthproduce.nl" className="legal-page__link">
+              info@greenearthproduce.nl
             </a>
             .
           </p>

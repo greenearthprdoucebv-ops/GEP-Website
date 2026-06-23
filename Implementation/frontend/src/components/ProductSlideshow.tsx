@@ -55,7 +55,7 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
     <div className="product-slideshow" onMouseEnter={() => setIsAutoPlay(false)} onMouseLeave={() => setIsAutoPlay(true)}>
       <div className="product-slideshow__main">
         {/* Main slide */}
-        <div className="product-slideshow__slide" key={current.name}>
+        <div className="product-slideshow__slide" key={currentIndex}>
           <div className={`product-slideshow__content ${current.imageLeft ? '' : 'product-slideshow__content--reversed'}`}>
             <div className="product-slideshow__image-wrap">
               <img
@@ -63,6 +63,28 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
                 alt={current.name}
                 className="product-slideshow__image"
               />
+              {products.length > 1 && (
+                <div className="product-slideshow__nav">
+                  <button
+                    className="product-slideshow__btn product-slideshow__btn--prev"
+                    onClick={handlePrev}
+                    aria-label="Previous product"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+                  <button
+                    className="product-slideshow__btn product-slideshow__btn--next"
+                    onClick={handleNext}
+                    aria-label="Next product"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
             <div className="product-slideshow__text">
               <span className="product-slideshow__origin">{current.origin}</span>
@@ -73,28 +95,6 @@ export function ProductSlideshow({ products }: ProductSlideshowProps) {
               </ul>
             </div>
           </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="product-slideshow__nav">
-          <button
-            className="product-slideshow__btn product-slideshow__btn--prev"
-            onClick={handlePrev}
-            aria-label="Previous product"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-          <button
-            className="product-slideshow__btn product-slideshow__btn--next"
-            onClick={handleNext}
-            aria-label="Next product"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
         </div>
       </div>
 

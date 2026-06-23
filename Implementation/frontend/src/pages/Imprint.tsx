@@ -24,8 +24,8 @@ export function Imprint() {
             </a>
             <br />
             Email:{' '}
-            <a href="mailto:gep@greenearthproduce.n" className="legal-page__link">
-             gep@greenearthproduce.n
+            <a href="mailto:info@greenearthproduce.nl" className="legal-page__link">
+             info@greenearthproduce.nl
             </a>
           </div>
         </section>

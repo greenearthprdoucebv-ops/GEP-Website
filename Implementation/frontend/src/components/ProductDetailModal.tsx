@@ -19,11 +19,10 @@ export type ProductModalData = {
 }
 
 const DEFAULT_QUANTITY_OPTIONS: QuantityOption[] = [
-  { id: '1kg', label: '1 kg' },
-  { id: '10kg', label: '10 kg' },
-  { id: '50kg', label: '50 kg' },
-  { id: '100kg', label: '100 kg' },
-  { id: 'pallet', label: 'Pallet (500 kg)' },
+  { id: '2kg',    label: '2 kg'    },
+  { id: '3kg',    label: '3 kg'    },
+  { id: '5kg',    label: '5 kg'    },
+  { id: '12.5kg', label: '12.5 kg' },
 ]
 
 function badgeLabelForProduct(tag: string): string {
@@ -45,7 +44,7 @@ export function ProductDetailModal({ product, imageSrc, onClose }: ProductDetail
     : DEFAULT_QUANTITY_OPTIONS
 
   const [selectedQtyId, setSelectedQtyId] = useState<string>(
-    () => options[options.length - 1]?.id ?? 'pallet',
+    () => options[0]?.id ?? '2kg',
   )
 
   useEffect(() => {

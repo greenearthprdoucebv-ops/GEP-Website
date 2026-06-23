@@ -2,17 +2,7 @@ import { Link } from 'react-router-dom'
 
 function IconInstagram() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
       <circle cx="12" cy="12" r="4" />
       <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
@@ -28,7 +18,6 @@ function IconLinkedIn() {
   )
 }
 
-
 function IconFacebook() {
   return (
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor">
@@ -39,116 +28,62 @@ function IconFacebook() {
 
 export function Footer() {
   return (
-  
-    <footer className="site-footer" aria-label="Site footer" style={{ backgroundColor: 'var(--gep-green)' }} >
-      <div className="site-footer__inner" style={{ 
-        display: 'flex', 
-        gap: '48px', 
-        flexWrap: 'wrap',
-        padding: '32px 20px'
-      }}>
-        <section className="site-footer__col site-footer__col--brand" style={{ 
-          color: '#fff',
-          flex: '1 1 100%'
-        }}>
+    <footer className="site-footer" aria-label="Site footer">
+      <div className="site-footer__inner">
+
+        {/* Brand column */}
+        <section className="site-footer__col site-footer__col--brand">
           <h2 className="site-footer__heading">Green Earth Produce B.V.</h2>
-          <p className="site-footer__blurb" style={{ color: '#fff' }}>
-            <a href="https://maps.google.com/?q=Venrayseweg+118+C,+5928+RH+Venlo"  target="_blank" rel="noreferrer" style={{ textDecoration: 'none', color: '#fff' }} aria-label="Location" >
+          <p className="site-footer__blurb">
+            <a href="https://maps.google.com/?q=Venrayseweg+118+C,+5928+RH+Venlo" target="_blank" rel="noreferrer" className="site-footer__link" aria-label="Location">
               Venrayseweg 118 C, 5928 RH Venlo
             </a>
             <br />
             +31 77 206 6760
           </p>
-          <div className="site-footer__socials" aria-label="Social media" style={{ display: 'flex', gap: '16px' }}>
-            <a
-              className="site-footer__social"
-              href="https://www.instagram.com/greenearthproducebv/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Instagram"
-              style={{ color: '#fff' }}
-            >
+          <div className="site-footer__socials" aria-label="Social media">
+            <a className="site-footer__social" href="https://www.instagram.com/greenearthproducebv/" target="_blank" rel="noreferrer" aria-label="Instagram">
               <IconInstagram />
             </a>
-            <a
-              className="site-footer__social"
-              href="https://facebook.com/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Facebook"
-              style={{ color: '#fff' }}
-            >
+            <a className="site-footer__social" href="https://facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">
               <IconFacebook />
             </a>
-            <a
-              className="site-footer__social"
-              href="https://www.linkedin.com/in/green-earth-produce-b-v-35a570371/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
-              style={{ color: '#fff' }}
-            >
+            <a className="site-footer__social" href="https://www.linkedin.com/in/green-earth-produce-b-v-35a570371/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
               <IconLinkedIn />
             </a>
           </div>
         </section>
 
-        <nav className="site-footer__col" aria-labelledby="site-footer-products" style={{ flex: '1 1 auto' }}>
-          <h2 id="site-footer-products" className="site-footer__heading">
-            Products
-          </h2>
-          <ul className="site-footer__list" style={{ paddingLeft: 0, listStyle: 'none' }}>
-            <li>
-              <Link className="site-footer__link site-footer__link" to="/catalogue" style={{ color: '#fff' }}>
-                Fresh Produce
-              </Link>
-            </li>
+        {/* Nav columns */}
+        <nav className="site-footer__col" aria-labelledby="site-footer-products">
+          <h2 id="site-footer-products" className="site-footer__heading">Products</h2>
+          <ul className="site-footer__list">
+            <li><Link className="site-footer__link" to="/catalogue">Fresh Produce</Link></li>
           </ul>
         </nav>
 
-        <nav className="site-footer__col" aria-labelledby="site-footer-support" style={{ flex: '1 1 auto' }}>
-          <h2 id="site-footer-support" className="site-footer__heading">
-            Support
-          </h2>
-          <ul className="site-footer__list" style={{ paddingLeft: 0, listStyle: 'none' }}>
-            <li>
-              <Link className="site-footer__link" to="/contact" style={{ color: '#fff' }}>
-                Support
-              </Link>
-            </li>
+        <nav className="site-footer__col" aria-labelledby="site-footer-support">
+          <h2 id="site-footer-support" className="site-footer__heading">Support</h2>
+          <ul className="site-footer__list">
+            <li><Link className="site-footer__link" to="/contact">Support</Link></li>
           </ul>
         </nav>
 
-        <nav className="site-footer__col" aria-labelledby="site-footer-legal" style={{ flex: '1 1 auto' }}>
-          <h2 id="site-footer-legal" className="site-footer__heading">
-            Legal
-          </h2>
-          <ul className="site-footer__list" style={{ paddingLeft: 0, listStyle: 'none' }}>
-            <li>
-              <Link className="site-footer__link" to="/privacy-policy" style={{ color: '#fff'}}>
-                Privacy Policy
-              </Link>
-            </li>
-            <li>
-              <Link className="site-footer__link" to="/imprint" style={{ color: '#fff' }}>
-                Imprint
-              </Link>
-            </li>
+        <nav className="site-footer__col" aria-labelledby="site-footer-legal">
+          <h2 id="site-footer-legal" className="site-footer__heading">Legal</h2>
+          <ul className="site-footer__list">
+            <li><Link className="site-footer__link" to="/privacy-policy">Privacy Policy</Link></li>
+            <li><Link className="site-footer__link" to="/imprint">Imprint</Link></li>
           </ul>
         </nav>
 
-        <nav className="site-footer__col" aria-labelledby="site-footer-admin" style={{ flex: '1 1 auto' }}>
-          <h2 id="site-footer-admin" className="site-footer__heading">
-            Admin
-          </h2>
-          <ul className="site-footer__list" style={{ paddingLeft: 0, listStyle: 'none' }}>
-            <li>
-              <Link className="site-footer__link" to="/admin" style={{ color: '#fff' }}>
-                Admin Portal
-              </Link>
-            </li>
+        <nav className="site-footer__col" aria-labelledby="site-footer-admin">
+          <h2 id="site-footer-admin" className="site-footer__heading">Admin</h2>
+          <ul className="site-footer__list">
+            <li><Link className="site-footer__link" to="/admin">Admin Portal</Link></li>
           </ul>
         </nav>
+
       </div>
     </footer>
   )

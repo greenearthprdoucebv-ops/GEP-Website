@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import cutGingerImg from '../assets/about/cutGinger.jpg'
 import chinaGingerImg from '../assets/about/China Ginger.png'
 import chineseGingerFallbackImg from '../assets/about/img1.png'
@@ -7,6 +7,62 @@ import { supabase } from '../lib/supabase'
 import { productImageUrl, resolveAssetUrl } from '../lib/productImage'
 import { ProductSlideshow, type Product as SlideshowProduct } from '../components/ProductSlideshow'
 import './Home.css'
+
+type HeroSlide = { id: number; image_url: string; title: string | null; caption: string | null; sort_order: number }
+type Certification = { id: number; name: string; image_url: string | null; sort_order: number }
+
+function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
+  const [current, setCurrent] = useState(0)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const goTo = useCallback((idx: number) => {
+    setCurrent(idx)
+  }, [])
+
+  useEffect(() => {
+    if (slides.length < 2) return
+    timerRef.current = setInterval(() => {
+      setCurrent(c => (c + 1) % slides.length)
+    }, 5000)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [slides.length])
+
+  if (!slides.length) return null
+  const slide = slides[current]
+
+  return (
+    <div className="hero-slideshow">
+      {slides.map((s, i) => (
+        <div
+          key={s.id}
+          className={`hero-slideshow__slide${i === current ? ' hero-slideshow__slide--active' : ''}`}
+          style={{ backgroundImage: `url(${resolveAssetUrl(s.image_url)})` }}
+        />
+      ))}
+      <div className="home-hero__overlay" />
+      <div className="home-hero__content">
+        <h1 className="home-hero__title">{slide.title || 'THE GINGER EXPERTS'}</h1>
+        {slide.caption && <p className="home-hero__lead">{slide.caption}</p>}
+        <div className="home-hero__actions">
+          <a href="/catalogue" className="home-hero__btn home-hero__btn--primary">Browse Catalogue</a>
+          <a href="/contact" className="home-hero__btn home-hero__btn--ghost">Get in Touch</a>
+        </div>
+      </div>
+      {slides.length > 1 && (
+        <div className="hero-slideshow__dots">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              className={`hero-slideshow__dot${i === current ? ' hero-slideshow__dot--active' : ''}`}
+              onClick={() => goTo(i)}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function slowVideo(el: HTMLVideoElement | null) {
   if (el) el.playbackRate = 0.8
@@ -67,20 +123,34 @@ const whyCards = [
   { icon: <TruckIcon />, title: 'Direct & Reliable',      body: 'No middlemen. Better prices, shorter lead times, direct grower relationships.' },
 ]
 
+const STATIC_CERTIFICATIONS = [
+  { id: -1, name: 'IFS Food', image_url: null, sort_order: 1 },
+  { id: -2, name: 'SKAL Organic', image_url: null, sort_order: 2 },
+  { id: -3, name: 'EU Organic', image_url: null, sort_order: 3 },
+  { id: -4, name: 'GlobalG.A.P', image_url: null, sort_order: 4 },
+]
+
 export function Home() {
+  const [heroMode, setHeroMode] = useState<'video' | 'slideshow'>('video')
   const [heroVideoUrl, setHeroVideoUrl] = useState<string>(GEPHeroSection)
-  const [heroLeadText, setHeroLeadText] = useState<string>('THE GINGER EXPERTS - Ginger Solutions for European Markets')
+  const [heroLeadText, setHeroLeadText] = useState<string>('Ginger Solutions for European Markets')
+  const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([])
   const [products, setProducts] = useState<SlideshowProduct[]>([])
+  const [certifications, setCertifications] = useState<Certification[]>(STATIC_CERTIFICATIONS)
 
   useEffect(() => {
     if (!supabase) return
 
     Promise.all([
-      supabase.from('home_hero').select('video_url, lead_text').order('id', { ascending: false }).limit(1).single(),
+      supabase.from('home_hero').select('*').order('id', { ascending: false }).limit(1),
       supabase.from('home_products').select('*').eq('is_active', true).order('sort_order'),
-    ]).then(([heroRes, productsRes]) => {
-      if (heroRes.data?.video_url) setHeroVideoUrl(resolveAssetUrl(heroRes.data.video_url))
-      if (heroRes.data?.lead_text) setHeroLeadText(heroRes.data.lead_text)
+      supabase.from('home_slideshow').select('*').eq('is_active', true).order('sort_order'),
+      supabase.from('certifications').select('*').eq('is_active', true).order('sort_order'),
+    ]).then(([heroRes, productsRes, slidesRes, certsRes]) => {
+      const hero = heroRes.data?.[0]
+      if (hero?.video_url) setHeroVideoUrl(resolveAssetUrl(hero.video_url))
+      if (hero?.lead_text) setHeroLeadText(hero.lead_text)
+      if (hero?.mode) setHeroMode(hero.mode as 'video' | 'slideshow')
 
       if (productsRes.data && productsRes.data.length > 0) {
         setProducts(
@@ -94,6 +164,14 @@ export function Home() {
           })),
         )
       }
+
+      if (slidesRes.data && slidesRes.data.length > 0) {
+        setHeroSlides(slidesRes.data)
+      }
+
+      if (certsRes.data && certsRes.data.length > 0) {
+        setCertifications(certsRes.data)
+      }
     })
   }, [])
 
@@ -102,28 +180,35 @@ export function Home() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────────── */}
       <section className="home-hero">
-        <video
-          ref={slowVideo}
-          className="home-hero__video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          disablePictureInPicture
-        >
-          <source src={heroVideoUrl} type="video/mp4" />
-        </video>
-        <div className="home-hero__content">
-          <p className="home-hero__lead">{heroLeadText}</p>
-          <div className="home-hero__actions">
-            <a href="/catalogue" className="home-hero__btn home-hero__btn--primary">Browse Catalogue</a>
-            <a href="/contact" className="home-hero__btn home-hero__btn--ghost">Get in Touch</a>
-          </div>
-        </div>
-        <div className="home-hero__scroll" aria-hidden="true">
-          <span className="home-hero__scroll-label">Scroll</span>
-          <span className="home-hero__scroll-line" />
-        </div>
+        {heroMode === 'slideshow' && heroSlides.length > 0 ? (
+          <HeroSlideshow slides={heroSlides} />
+        ) : (
+          <>
+            <video
+              ref={slowVideo}
+              className="home-hero__video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              disablePictureInPicture
+            >
+              <source src={heroVideoUrl} type="video/mp4" />
+            </video>
+            <div className="home-hero__content">
+              <h1 className="home-hero__title">THE GINGER EXPERTS</h1>
+              <p className="home-hero__lead">{heroLeadText}</p>
+              <div className="home-hero__actions">
+                <a href="/catalogue" className="home-hero__btn home-hero__btn--primary">Browse Catalogue</a>
+                <a href="/contact" className="home-hero__btn home-hero__btn--ghost">Get in Touch</a>
+              </div>
+            </div>
+            <div className="home-hero__scroll" aria-hidden="true">
+              <span className="home-hero__scroll-label">Scroll</span>
+              <span className="home-hero__scroll-line" />
+            </div>
+          </>
+        )}
       </section>
 
       {/* ── Products Slideshow ────────────────────────────────────────────── */}
@@ -155,22 +240,23 @@ export function Home() {
           <div className="home-section-inner">
             <h2 className="home-section-title">Certifications & Standards</h2>
             <div className="home-certifications__grid">
-              <div className="certification-badge">
-                <div className="certification-badge__icon">IFS</div>
-                <p className="certification-badge__text">IFS FOOD</p>
-              </div>
-              <div className="certification-badge">
-                <div className="certification-badge__icon">SKAL</div>
-                <p className="certification-badge__text">SKAL Organic</p>
-              </div>
-              <div className="certification-badge">
-                <div className="certification-badge__icon">EU</div>
-                <p className="certification-badge__text">EU Organic</p>
-              </div>
-              <div className="certification-badge">
-                <div className="certification-badge__icon">GlobalG.A.P</div>
-                <p className="certification-badge__text">GlobalG.A.P Certified</p>
-              </div>
+              {certifications.map((cert) => (
+                <div key={cert.id} className="certification-badge">
+                  {cert.image_url ? (
+                    <div className="certification-badge__img-wrap">
+                      <img
+                        src={resolveAssetUrl(cert.image_url)}
+                        alt={cert.name}
+                        className="certification-badge__img"
+                        onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+                      />
+                    </div>
+                  ) : (
+                    <div className="certification-badge__icon">{cert.name.split(' ')[0]}</div>
+                  )}
+                  <p className="certification-badge__text">{cert.name}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>

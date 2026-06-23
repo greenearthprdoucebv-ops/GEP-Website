@@ -71,7 +71,7 @@
   flex-direction: column;
   align-items: center;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(3.4rem, 10vw, 7.5rem);
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
   font-weight: 400;
   line-height: 1;
   letter-spacing: 0.12em;
@@ -260,12 +260,12 @@
 .product-card__tags li {
   padding: 5px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(46,204,138,0.45);
+  border: 1px solid rgba(46,204,138,0.55);
   background: rgba(46,204,138,0.07);
   font-size: 0.74rem;
   font-weight: 500;
   letter-spacing: 0.06em;
-  color: #1a8c5a;
+  color: #2ecc8a;
 }
 
 /* ── Shared ginger background wrapper (Why + Reviews — no seam) ─────────────
@@ -437,9 +437,9 @@
 
 .home-certifications__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 32px;
-  max-width: 1000px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -447,8 +447,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 32px 24px;
+  gap: 10px;
+  padding: 18px 16px;
   background: #f9fbf9;
   border: 1px solid #ddeee5;
   border-radius: 12px;
@@ -466,23 +466,136 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 8px;
   background: linear-gradient(135deg, #2ecc8a 0%, #1a8e5c 100%);
   color: white;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-align: center;
-  padding: 12px;
+  padding: 8px;
   line-height: 1.2;
+}
+
+.certification-badge__img-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 60px;
+}
+
+.certification-badge__img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 .certification-badge__text {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #0d2015;
+  color: #ffffff;
+}
+
+/* HERO SLIDESHOW */
+
+/* The section becomes a simple block when slideshow is active */
+.home-hero--slideshow {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 480px;
+  padding: 0;
+  display: block;
+  position: relative;
+}
+
+.hero-slideshow {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 480px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.hero-slideshow__slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.hero-slideshow__slide--active {
+  opacity: 1;
+}
+
+.home-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 22, 12, 0.55);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-slideshow .home-hero__content {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 120px;
+  text-align: center;
+}
+
+.hero-slideshow__dots {
+  position: absolute;
+  bottom: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  gap: 10px;
+}
+
+.hero-slideshow__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.6);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.hero-slideshow__dot--active {
+  background: #2ecc8a;
+  border-color: #2ecc8a;
+}
+
+@media (max-width: 768px) {
+  .home-hero--slideshow {
+    height: 100dvh;
+    min-height: 480px;
+  }
+
+  .hero-slideshow {
+    height: 100%;
+    min-height: 480px;
+  }
+
+  .hero-slideshow .home-hero__content {
+    padding: 0 20px 80px;
+  }
+
+  .hero-slideshow__dots { bottom: 32px; }
+
+  .certification-badge__img-wrap { width: 90px; height: 60px; }
 }
 
 /* RESPONSIVE */

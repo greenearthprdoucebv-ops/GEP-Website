@@ -53,9 +53,9 @@ export default function Navbar() {
         </Link>
 
         <ul className="nav-links">
-          <li><Link to="/About">About</Link></li>
-          <li><Link to="/Catalogue">Products</Link></li>
-          <li><Link to="/Contact">Contact</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/catalogue">Products</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
         </ul>
 
         <button
@@ -71,9 +71,9 @@ export default function Navbar() {
       </nav>
 
       <div className={`nav-drawer${menuOpen ? ' nav-drawer--open' : ''}`} aria-hidden={!menuOpen}>
-        <Link to="/About" onClick={closeMenu}>About</Link>
-        <Link to="/Catalogue" onClick={closeMenu}>Products</Link>
-        <Link to="/Contact" onClick={closeMenu}>Contact</Link>
+        <Link to="/about" onClick={closeMenu}>About</Link>
+        <Link to="/catalogue" onClick={closeMenu}>Products</Link>
+        <Link to="/contact" onClick={closeMenu}>Contact</Link>
       </div>
 
       {menuOpen && <div className="nav-backdrop" onClick={closeMenu} />}

@@ -5,6 +5,8 @@ import { availabilityModifier } from '../lib/productMeta'
 import { productImageUrl } from '../lib/productImage'
 import { supabase, supabaseConfigError } from '../lib/supabase'
 import chineseGingerImg from '../assets/about/img1.png'
+import gingerHarvestImg from '../assets/about/ginger-harvest.jpeg'
+import cutGingerImg from '../assets/about/cutGinger.jpg'
 
 type Product = ProductModalData & {
   weight: string
@@ -23,6 +25,17 @@ type DbProduct = {
   availability: string | null
   cta: string
   image_url: string | null
+}
+
+function normalizeCatalogueProductOrigin(title: string | null | undefined, origin: string | null | undefined) {
+  if (typeof title === 'string' && title.toLowerCase().includes('chinese ginger')) {
+    return 'SOUTH / NORTH, CHINA'
+  }
+  const cleanedOrigin = origin?.trim() ?? ''
+  if (cleanedOrigin.toLowerCase().includes('china')) {
+    return 'SOUTH / NORTH, CHINA'
+  }
+  return cleanedOrigin
 }
 
 function IconGauge() {
@@ -135,8 +148,13 @@ export function Catalogue() {
         cta: product.cta === 'contact' ? 'contact' : 'cart',
       })) ?? []
 
+      const normalizedCatalogue = normalizedProducts.map((product) => ({
+        ...product,
+        origin: normalizeCatalogueProductOrigin(product.title, product.origin),
+      }))
+
       setErrorMessage(null)
-      setProducts(normalizedProducts)
+      setProducts(normalizedCatalogue)
       setIsLoading(false)
     }
 
@@ -181,7 +199,15 @@ export function Catalogue() {
               <div className="catalogue-card__media">
                 <img
                   className="catalogue-card__img"
-                  src={p.image_url ? productImageUrl(p.image_url) : (p.title.toLowerCase().includes('chinese ginger') ? chineseGingerImg : productImageUrl(null))}
+                  src={
+                    p.image_url
+                      ? productImageUrl(p.image_url)
+                      : p.title.toLowerCase().includes('chinese ginger')
+                        ? chineseGingerImg
+                        : p.title.toLowerCase().includes('ginger')
+                          ? gingerHarvestImg
+                          : cutGingerImg
+                  }
                   alt={p.title}
                   width={800}
                   height={520}
