@@ -200,6 +200,14 @@
   background: rgba(255, 255, 255, 0.93);
 }
 
+.home-ginger-bg .why-card__title {
+  color: #0d2015;
+}
+
+.home-ginger-bg .why-card__body {
+  color: #4b5d52;
+}
+
 /* WHY */
 
 .home-why {
