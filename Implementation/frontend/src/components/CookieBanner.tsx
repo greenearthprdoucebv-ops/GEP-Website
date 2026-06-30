@@ -4,6 +4,8 @@ import './CookieBanner.css';
 
 type ConsentAction = 'accept_all' | 'reject_all' | 'customize';
 
+// Consent logging is anonymous (no user account required), so we key rows by a
+// random client-generated device ID persisted in localStorage rather than a user ID.
 function getDeviceId(): string {
   let id = localStorage.getItem('gep_device_id');
   if (!id) {
@@ -140,6 +142,53 @@ const translations = {
   },
 };
 
+function CookieToggle({
+  label,
+  checked,
+  disabled,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  disabled?: boolean;
+  onChange?: (checked: boolean) => void;
+}) {
+  return (
+    <label className="cookie-toggle" aria-label={label}>
+      <input
+        type="checkbox"
+        disabled={disabled}
+        // The "necessary" category is always-on and never changes, so it's rendered
+        // uncontrolled (defaultChecked) instead of controlled (checked) — React warns
+        // if a disabled checkbox is given `checked` without a matching `onChange`.
+        {...(disabled ? { defaultChecked: checked } : { checked })}
+        onChange={(e) => onChange?.(e.target.checked)}
+      />
+      <span className="cookie-toggle__slider" />
+    </label>
+  );
+}
+
+function CookieCategoryRow({
+  name,
+  description,
+  children,
+}: {
+  name: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="cookie-category">
+      <div className="cookie-category__header">
+        <span className="cookie-category__name">{name}</span>
+        {children}
+      </div>
+      <p className="cookie-category__description">{description}</p>
+    </div>
+  );
+}
+
 export default function CookieBanner({
   locale: localeProp = 'en',
   privacyPolicyUrl = '/privacy-policy',
@@ -161,12 +210,16 @@ export default function CookieBanner({
   }, []);
 
   useEffect(() => {
+    // Small delay so focus moves to the close button only after the modal has
+    // actually mounted/painted, rather than racing the render.
     if (showModal) {
       const id = setTimeout(() => closeButtonRef.current?.focus(), 40);
       return () => clearTimeout(id);
     }
   }, [showModal]);
 
+  // Keeps keyboard focus cycling within the modal (WAI-ARIA dialog pattern) and
+  // closes it on Escape, since there's no <dialog> element doing this natively.
   const handleModalKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === 'Escape') { setShowModal(false); return; }
@@ -213,70 +266,72 @@ export default function CookieBanner({
         </button>
       )}
 
-      {visible && <div
-        className="cookie-banner"
-        role="region"
-        aria-label={t.title}
-        aria-live="polite"
-      >
-        <div className="cookie-banner__inner">
-          <div className="cookie-banner__text">
-            <p className="cookie-banner__title">{t.title}</p>
-            <p className="cookie-banner__description">
-              {t.description}{' '}
-              <a
-                href={privacyPolicyUrl}
-                className="cookie-banner__link"
-                {...(privacyPolicyUrl.startsWith('http')
-                  ? { target: '_blank', rel: 'noopener noreferrer' }
-                  : {})}
-              >
-                {t.privacyPolicy}
-              </a>
-            </p>
-          </div>
-
-          <div className="cookie-banner__controls">
-            <div className="cookie-banner__lang" role="group" aria-label={t.languageLabel}>
-              {(['en', 'nl', 'zh'] as Locale[]).map((lang) => (
-                <button
-                  key={lang}
-                  type="button"
-                  className={`cookie-lang-btn${locale === lang ? ' active' : ''}`}
-                  onClick={() => setLocale(lang)}
-                  aria-pressed={locale === lang}
+      {visible && (
+        <div
+          className="cookie-banner"
+          role="region"
+          aria-label={t.title}
+          aria-live="polite"
+        >
+          <div className="cookie-banner__inner">
+            <div className="cookie-banner__text">
+              <p className="cookie-banner__title">{t.title}</p>
+              <p className="cookie-banner__description">
+                {t.description}{' '}
+                <a
+                  href={privacyPolicyUrl}
+                  className="cookie-banner__link"
+                  {...(privacyPolicyUrl.startsWith('http')
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
                 >
-                  {lang.toUpperCase()}
-                </button>
-              ))}
+                  {t.privacyPolicy}
+                </a>
+              </p>
             </div>
 
-            <div className="cookie-banner__actions">
-              <button
-                type="button"
-                className="cookie-btn cookie-btn--reject"
-                onClick={() => dismiss('reject_all', false, false)}
-              >
-                {t.rejectAll}
-              </button>
-              <button
-                type="button"
-                className="cookie-btn cookie-btn--customize"
-                onClick={() => setShowModal(true)}
-              >
-                {t.customize}
-              </button>
-              <button
-                type="button"
-                className="cookie-btn cookie-btn--accept"
-                onClick={() => dismiss('accept_all', true, true)}
-              >
-                {t.acceptAll}
-              </button>
+            <div className="cookie-banner__controls">
+              <div className="cookie-banner__lang" role="group" aria-label={t.languageLabel}>
+                {(['en', 'nl', 'zh'] as Locale[]).map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    className={`cookie-lang-btn${locale === lang ? ' active' : ''}`}
+                    onClick={() => setLocale(lang)}
+                    aria-pressed={locale === lang}
+                  >
+                    {lang.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+
+              <div className="cookie-banner__actions">
+                <button
+                  type="button"
+                  className="cookie-btn cookie-btn--reject"
+                  onClick={() => dismiss('reject_all', false, false)}
+                >
+                  {t.rejectAll}
+                </button>
+                <button
+                  type="button"
+                  className="cookie-btn cookie-btn--customize"
+                  onClick={() => setShowModal(true)}
+                >
+                  {t.customize}
+                </button>
+                <button
+                  type="button"
+                  className="cookie-btn cookie-btn--accept"
+                  onClick={() => dismiss('accept_all', true, true)}
+                >
+                  {t.acceptAll}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>}
+      )}
 
       {showModal && (
         <div
@@ -309,49 +364,25 @@ export default function CookieBanner({
 
             <p className="cookie-modal__description">{t.modalDescription}</p>
 
-            <div className="cookie-category">
-              <div className="cookie-category__header">
-                <span className="cookie-category__name">{t.categories.necessary.label}</span>
-                <div className="cookie-category__meta">
-                  <span className="cookie-category__always-on">{t.alwaysOn}</span>
-                  <label className="cookie-toggle" aria-label={t.categories.necessary.label}>
-                    <input type="checkbox" defaultChecked disabled />
-                    <span className="cookie-toggle__slider" />
-                  </label>
-                </div>
+            <CookieCategoryRow
+              name={t.categories.necessary.label}
+              description={t.categories.necessary.description}
+            >
+              <div className="cookie-category__meta">
+                <span className="cookie-category__always-on">{t.alwaysOn}</span>
+                <CookieToggle label={t.categories.necessary.label} checked disabled />
               </div>
-              <p className="cookie-category__description">{t.categories.necessary.description}</p>
-            </div>
+            </CookieCategoryRow>
 
-            <div className="cookie-category">
-              <div className="cookie-category__header">
-                <span className="cookie-category__name">{t.categories.analytics.label}</span>
-                <label className="cookie-toggle" aria-label={t.categories.analytics.label}>
-                  <input
-                    type="checkbox"
-                    checked={preferences.analytics}
-                    onChange={(e) => setPreferences((p) => ({ ...p, analytics: e.target.checked }))}
-                  />
-                  <span className="cookie-toggle__slider" />
-                </label>
-              </div>
-              <p className="cookie-category__description">{t.categories.analytics.description}</p>
-            </div>
-
-            <div className="cookie-category">
-              <div className="cookie-category__header">
-                <span className="cookie-category__name">{t.categories.marketing.label}</span>
-                <label className="cookie-toggle" aria-label={t.categories.marketing.label}>
-                  <input
-                    type="checkbox"
-                    checked={preferences.marketing}
-                    onChange={(e) => setPreferences((p) => ({ ...p, marketing: e.target.checked }))}
-                  />
-                  <span className="cookie-toggle__slider" />
-                </label>
-              </div>
-              <p className="cookie-category__description">{t.categories.marketing.description}</p>
-            </div>
+            {(['analytics', 'marketing'] as const).map((key) => (
+              <CookieCategoryRow key={key} name={t.categories[key].label} description={t.categories[key].description}>
+                <CookieToggle
+                  label={t.categories[key].label}
+                  checked={preferences[key]}
+                  onChange={(checked) => setPreferences((p) => ({ ...p, [key]: checked }))}
+                />
+              </CookieCategoryRow>
+            ))}
 
             <div className="cookie-modal__footer">
               <button

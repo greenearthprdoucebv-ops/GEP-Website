@@ -19,6 +19,8 @@ function IconLinkedIn() {
 }
 
 
+// Static content (unlike Home/About/Catalogue, which pull from Supabase) —
+// there's no admin UI for footer text/links, so changes require a code edit.
 export function Footer() {
   return (
     <footer className="site-footer" aria-label="Site footer">
@@ -67,6 +69,7 @@ export function Footer() {
           </ul>
         </nav>
 
+        {/* Link to the CMS login — gated by Supabase auth on the /admin route itself */}
         <nav className="site-footer__col" aria-labelledby="site-footer-admin">
           <h2 id="site-footer-admin" className="site-footer__heading">Admin</h2>
           <ul className="site-footer__list">

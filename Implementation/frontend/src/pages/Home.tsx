@@ -20,6 +20,8 @@ function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
   }, [])
 
   useEffect(() => {
+    // Depends on slides.length (not just mount) so the interval restarts cleanly
+    // if the slide set is ever swapped out from under it.
     if (slides.length < 2) return
     timerRef.current = setInterval(() => {
       setCurrent(c => (c + 1) % slides.length)
@@ -46,7 +48,7 @@ function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
         <h1 className="home-hero__title">{slide.title || 'THE GINGER EXPERTS'}</h1>
         {slide.caption && <p className="home-hero__lead">{slide.caption}</p>}
         <div className="home-hero__actions">
-          <a href="/catalogue" className="home-hero__btn home-hero__btn--primary">Browse Catalogue</a>
+          <a href="/catalogue" className="home-hero__btn home-hero__btn--primary">Products</a>
           <a href="/contact" className="home-hero__btn home-hero__btn--ghost">Get in Touch</a>
         </div>
       </div>
@@ -70,6 +72,8 @@ function slowVideo(el: HTMLVideoElement | null) {
   if (el) el.playbackRate = 0.8
 }
 
+// "Chinese ginger" is sourced from two regions, so its origin label is
+// normalized regardless of what the admin typed into the DB origin field.
 function isChineseGingerProduct(name: string | null | undefined) {
   return typeof name === 'string' && name.toLowerCase().includes('chinese ginger')
 }
@@ -87,6 +91,7 @@ function normalizeHomeProductOrigin(name: string | null | undefined, origin: str
   return cleanedOrigin
 }
 
+// Image priority: admin-uploaded image > Chinese-ginger-specific fallback > generic fallback.
 function getHomeProductImage(name: string | null | undefined, imageUrl: string | null | undefined) {
   if (imageUrl) return productImageUrl(imageUrl)
   if (isChineseGingerProduct(name)) return chineseGingerFallbackImg
@@ -141,8 +146,12 @@ export function Home() {
   const [certifications, setCertifications] = useState<Certification[]>(STATIC_CERTIFICATIONS)
 
   useEffect(() => {
+    // No Supabase client (e.g. local dev without env vars) → keep the static
+    // fallback content defined above instead of fetching.
     if (!supabase) return
 
+    // Fired in parallel since the four sections are independent; each only
+    // overwrites its static fallback state if rows actually came back.
     Promise.all([
       supabase.from('home_hero').select('*').order('id', { ascending: false }).limit(1),
       supabase.from('home_products').select('*').eq('is_active', true).order('sort_order'),

@@ -41,6 +41,8 @@ type HomeProduct = {
   sort_order: number
 }
 
+// id is a string (uuid) here, unlike the numeric auto-increment ids used by
+// every other table in this file.
 type CatalogueProduct = {
   id: string
   title: string
@@ -95,6 +97,13 @@ function ConfirmDialog({ message, onConfirm, onCancel }: {
   )
 }
 
+// Every section below (Hero, Home Products, Catalogue, Slideshow,
+// Certifications) repeats the same shape: load() fetches rows, save() does an
+// update-if-editing/insert-if-adding upsert from a modal's draft row, del()
+// removes a row after confirmation. Kept duplicated rather than abstracted
+// since each table's fields/validation differ enough that a shared hook would
+// mostly be indirection.
+
 // ── Hero Section ──────────────────────────────────────────────────────────────
 
 function HeroSection() {
@@ -115,6 +124,9 @@ function HeroSection() {
 
   useEffect(() => { load() }, [])
 
+  // uploadStorageFile returns a storage path, not a public URL — it's stored
+  // in the DB as-is, and resolveAssetUrl()/productImageUrl() turn it into a
+  // usable URL wherever it's displayed (here and on the public pages).
   async function uploadVideo(file: File) {
     setErr('')
     setUploadingVideo(true)
@@ -174,6 +186,8 @@ function HeroSection() {
                   <td><span className={`admin-badge admin-badge--${row.mode === 'slideshow' ? 'active' : 'current'}`}>{row.mode ?? 'video'}</span></td>
                   <td className="admin-table__ellipsis">{row.video_url}</td>
                   <td>
+                    {/* rows are loaded ordered by id desc, so index 0 is always
+                        the most recently added entry — i.e. the live one. */}
                     <span className={`admin-badge admin-badge--${i === 0 ? 'current' : 'archived'}`}>
                       {i === 0 ? 'Current' : 'Archived'}
                     </span>
@@ -1070,6 +1084,10 @@ function CertificationsSection() {
 
 // ── About Page Section ────────────────────────────────────────────────────────
 
+// Unlike the other sections, About content isn't a list of rows — it's one
+// wide row in `about_content` with one column per text field. ABOUT_GROUPS
+// below describes those columns so the form (and About.tsx's rendering) can
+// be generated instead of hand-written per field.
 type AboutContent = Record<string, string>
 
 type AboutGroup = {
@@ -1322,7 +1340,7 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'slideshow',        label: 'Slideshow'      },
   { key: 'certifications',   label: 'Certifications' },
   { key: 'home-products',    label: 'Home Products'  },
-  { key: 'catalogue',        label: 'Catalogue'      },
+  { key: 'catalogue',        label: 'Product'        },
   { key: 'about',            label: 'About Page'     },
 ]
 
@@ -1332,6 +1350,9 @@ export function AdminDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // This component is mounted at /admin/dashboard; route guarding happens
+    // here rather than in a router wrapper, so an unauthenticated visit just
+    // bounces straight to the /admin login page.
     if (!supabase) { navigate('/admin', { replace: true }); return }
 
     supabase.auth.getSession().then(({ data }) => {
@@ -1339,6 +1360,8 @@ export function AdminDashboard() {
       else setLoading(false)
     })
 
+    // Also redirect if the session expires/gets signed out elsewhere (e.g.
+    // another tab), not just on initial mount.
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) navigate('/admin', { replace: true })
     })

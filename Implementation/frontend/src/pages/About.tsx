@@ -47,6 +47,8 @@ function BoxIcon() {
     )
 }
 
+// Keyed by the icon name the admin picks for each value/focus card in
+// about_content (e.g. value1_icon: 'leaf') — unknown keys fall back to LeafIcon below.
 const VALUE_ICONS: Record<string, ReactElement> = {
     leaf: <LeafIcon />,
     clock: <ClockIcon />,
@@ -113,6 +115,8 @@ export function About() {
         })
     }, [])
 
+    // No skeleton/loading state on purpose: every field below is required, so
+    // rendering before content arrives would just show empty headings/paragraphs.
     if (!content) return null
     const c = content
 

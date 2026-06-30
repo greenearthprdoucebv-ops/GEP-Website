@@ -12,6 +12,9 @@ export default function Navbar() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  // Only the homepage has a full-bleed hero, so elsewhere the navbar is always
+  // visible/solid. On home it fades in at 75% of one viewport height of scroll
+  // and turns solid once the user has scrolled a full viewport past the hero.
   const onScroll = useCallback(() => {
     if (!isHome) return;
     const y = window.scrollY;
@@ -31,6 +34,8 @@ export default function Navbar() {
     }
   }, [isHome, onScroll]);
 
+  // Close the mobile drawer on navigation, and also if the navbar itself
+  // scrolls out of view (so the drawer can't stay open over a hidden bar).
   useEffect(() => { closeMenu(); }, [location.pathname]);
   useEffect(() => { if (!show) closeMenu(); }, [show]);
 
