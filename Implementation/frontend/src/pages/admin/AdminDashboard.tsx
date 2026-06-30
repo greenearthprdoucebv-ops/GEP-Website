@@ -250,7 +250,7 @@ function HeroSection() {
             <span>Upload Video</span>
             <input
               type="file"
-              accept="video/mp4"
+              accept="video/mp4,video/quicktime,.mp4,.mov"
               onChange={async e => {
                 const file = e.target.files?.[0]
                 if (!file) return
@@ -505,7 +505,7 @@ function CatalogueSection() {
   useEffect(() => { load() }, [])
 
   function blank(): Partial<CatalogueProduct> {
-    return { title: '', weight: '', description: '', price: '', tag: '', origin: '', availability: 'Available', cta: 'contact', image_url: '' }
+    return { title: '', description: '', tag: '', origin: '', availability: 'Available', cta: 'contact', image_url: '' }
   }
 
   function setField<K extends keyof CatalogueProduct>(key: K, val: CatalogueProduct[K]) {
@@ -530,9 +530,7 @@ function CatalogueSection() {
     const payload = {
       title:            modal.row.title ?? '',
       name:             modal.row.title ?? '',   // mirrors title for legacy column
-      weight:           modal.row.weight || null,
       description:      modal.row.description ?? '',
-      price:            modal.row.price || null,
       tag:              modal.row.tag || null,
       origin:           modal.row.origin || null,
       availability:     modal.row.availability || null,
@@ -568,7 +566,7 @@ function CatalogueSection() {
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead><tr>
-              <th>Image</th><th>Title</th><th>Origin</th><th>Price</th><th>Availability</th><th>Tag</th><th></th>
+              <th>Image</th><th>Title</th><th>Origin</th><th>Availability</th><th>Tag</th><th></th>
             </tr></thead>
             <tbody>
               {rows.map(row => (
@@ -585,7 +583,6 @@ function CatalogueSection() {
                   </td>
                   <td>{row.title}</td>
                   <td>{row.origin ?? '—'}</td>
-                  <td>{row.price ? `€${row.price}` : '—'}</td>
                   <td>
                     <span className={`admin-badge admin-badge--${row.availability === 'Available' ? 'active' : 'inactive'}`}>
                       {row.availability ?? '—'}
@@ -626,16 +623,8 @@ function CatalogueSection() {
             <input type="text" value={modal.row.origin ?? ''} onChange={e => setField('origin', e.target.value)} placeholder="Shandong, China" />
           </label>
           <label className="admin-field">
-            <span>Weight</span>
-            <input type="text" value={modal.row.weight ?? ''} onChange={e => setField('weight', e.target.value)} placeholder="250g" />
-          </label>
-          <label className="admin-field">
             <span>Description</span>
             <textarea value={modal.row.description ?? ''} onChange={e => setField('description', e.target.value)} rows={3} />
-          </label>
-          <label className="admin-field">
-            <span>Price (€)</span>
-            <input type="text" value={modal.row.price ?? ''} onChange={e => setField('price', e.target.value)} placeholder="12.50" />
           </label>
           <label className="admin-field">
             <span>Tag</span>

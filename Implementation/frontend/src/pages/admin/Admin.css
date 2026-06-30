@@ -318,9 +318,6 @@
 .admin-badge--clickable { cursor: pointer; transition: opacity 0.18s; }
 .admin-badge--clickable:hover { opacity: 0.75; }
 
-/* Stars */
-.admin-stars { color: #2ecc8a; letter-spacing: 0.04em; }
-
 /* ── Empty state ────────────────────────────────────────────────────────────── */
 
 .admin-empty {

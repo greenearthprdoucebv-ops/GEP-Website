@@ -69,7 +69,7 @@
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 2.2rem;
   font-weight: 400;
-  color: #0d2015;
+  color: var(--gep-text-strong);
   line-height: 1.2;
 }
 
@@ -77,7 +77,7 @@
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.8;
-  color: #4a5e52;
+  color: var(--gep-text-soft);
 }
 
 .product-slideshow__tags {

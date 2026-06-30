@@ -5,6 +5,13 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GreenEarthProduce</title>
+    <script>
+      // Runs before paint so the page never flashes the wrong theme on load.
+      try {
+        var t = localStorage.getItem('gep_theme');
+        if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -385,6 +385,68 @@
   flex-shrink: 0;
 }
 
+/* ── Dark mode ──────────────────────────────────────────────────────────────── */
+[data-theme='dark'] .cookie-banner,
+[data-theme='dark'] .cookie-modal {
+  background: #16231c;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='dark'] .cookie-banner__title,
+[data-theme='dark'] .cookie-modal__title,
+[data-theme='dark'] .cookie-category__name {
+  color: #f1f5f2;
+}
+
+[data-theme='dark'] .cookie-banner__description,
+[data-theme='dark'] .cookie-modal__description,
+[data-theme='dark'] .cookie-category__description {
+  color: #93a89c;
+}
+
+[data-theme='dark'] .cookie-category {
+  background: #1a2920;
+  border-color: #2b3c31;
+}
+
+[data-theme='dark'] .cookie-lang-btn {
+  border-color: #2b3c31;
+  color: #93a89c;
+}
+
+[data-theme='dark'] .cookie-btn--customize {
+  background: transparent;
+  color: #c4d2c9;
+  border-color: #2b3c31;
+}
+
+[data-theme='dark'] .cookie-btn--customize:hover {
+  background: #1a2920;
+  border-color: #3b4f43;
+  color: #f1f5f2;
+}
+
+[data-theme='dark'] .cookie-btn--reject {
+  background: transparent;
+}
+
+[data-theme='dark'] .cookie-btn--reject:hover {
+  background: rgba(46, 204, 138, 0.12);
+}
+
+[data-theme='dark'] .cookie-modal__close {
+  color: #93a89c;
+}
+
+[data-theme='dark'] .cookie-modal__close:hover {
+  background: #1a2920;
+  color: #f1f5f2;
+}
+
+[data-theme='dark'] .cookie-modal__footer {
+  border-top-color: #2b3c31;
+}
+
 /* ── Mobile responsive ─────────────────────────────────────────────────────── */
 @media (max-width: 680px) {
   .cookie-banner {

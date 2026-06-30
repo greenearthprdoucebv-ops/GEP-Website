@@ -31,7 +31,7 @@
   margin: 0 0 14px;
   font-size: clamp(2rem, 4vw, 2.8rem);
   line-height: 1.1;
-  color: #183425;
+  color: var(--gep-text-strong);
 }
 
 .newsletter-confirm__message {
@@ -39,7 +39,7 @@
   max-width: 44ch;
   font-size: 1rem;
   line-height: 1.7;
-  color: #4b5563;
+  color: var(--gep-text);
 }
 
 .newsletter-confirm__actions {
@@ -85,6 +85,22 @@
 .newsletter-confirm__card--expired,
 .newsletter-confirm__card--error {
   border-color: rgba(180, 83, 9, 0.22);
+}
+
+[data-theme='dark'] .newsletter-confirm {
+  background:
+    radial-gradient(circle at top, rgba(46, 204, 138, 0.1), transparent 38%),
+    linear-gradient(180deg, #0f1813 0%, #0d1a14 100%);
+}
+
+[data-theme='dark'] .newsletter-confirm__card {
+  background: rgba(22, 35, 28, 0.94);
+  border-color: rgba(46, 204, 138, 0.2);
+}
+
+[data-theme='dark'] .newsletter-confirm__btn--secondary {
+  background: transparent;
+  color: #6fe3ad;
 }
 
 @media (max-width: 640px) {

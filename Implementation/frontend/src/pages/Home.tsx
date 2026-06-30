@@ -204,7 +204,10 @@ export function Home() {
               playsInline
               disablePictureInPicture
             >
-              <source src={heroVideoUrl} type="video/mp4" />
+              {/* No type attribute: the source can be an admin-uploaded .mp4 or .mov,
+                  so we let the browser read the real Content-Type from Supabase Storage
+                  rather than asserting a MIME type that might not match. */}
+              <source src={heroVideoUrl} />
             </video>
             <div className="home-hero__content">
               <h1 className="home-hero__title">THE GINGER EXPERTS</h1>

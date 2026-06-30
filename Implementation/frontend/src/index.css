@@ -16,11 +16,22 @@
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
+  /* ── Theme tokens (dark mode overrides below) ────────────────────────── */
+  --gep-bg: #ffffff;
+  --gep-bg-soft: #f4f7f5;
+  --gep-surface: #ffffff;
+  --gep-text-strong: #0d2015;
+  --gep-text: #374151;
+  --gep-text-soft: #6b7280;
+  --gep-border: #e5e7eb;
+  --gep-border-soft: #ddeee5;
+  --gep-shadow: rgba(0, 0, 0, 0.06);
+
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light;
   color: #000;
-  background: #fff;
+  background: var(--gep-bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -29,10 +40,27 @@
   @media (max-width: 1024px) { font-size: 16px; }
 }
 
+:root[data-theme='dark'] {
+  --text: #f1f5f2;
+  --text-h: #f1f5f2;
+  --code-bg: #1a2920;
+  --gep-bg: #0f1813;
+  --gep-bg-soft: #131f19;
+  --gep-surface: #16231c;
+  --gep-text-strong: #f1f5f2;
+  --gep-text: #c4d2c9;
+  --gep-text-soft: #93a89c;
+  --gep-border: #243228;
+  --gep-border-soft: #2b3c31;
+  --gep-shadow: rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+
 body {
   margin: 0;
-  background: #fff;
-  color: #000;
+  background: var(--gep-bg);
+  color: var(--gep-text-strong);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 #root {
@@ -70,14 +98,11 @@ h2 {
 
 p { margin: 0; }
 
-code, .counter {
+code {
   font-family: var(--mono), monospace;
   display: inline-flex;
   border-radius: 4px;
   color: var(--text-h);
-}
-
-code {
   font-size: 15px;
   line-height: 135%;
   padding: 4px 8px;
