@@ -32,14 +32,16 @@ function HeroSlideshow({ slides }: { slides: HeroSlide[] }) {
 
   return (
     <div className="hero-slideshow">
-      {slides.map((s, i) => (
-        <div
-          key={s.id}
-          className={`hero-slideshow__slide${i === current ? ' hero-slideshow__slide--active' : ''}`}
-          style={{ backgroundImage: `url(${resolveAssetUrl(s.image_url)})` }}
-        />
-      ))}
-      <div className="home-hero__overlay" />
+      <div className="hero-slideshow__stage">
+        {slides.map((s, i) => (
+          <div
+            key={s.id}
+            className={`hero-slideshow__slide${i === current ? ' hero-slideshow__slide--active' : ''}`}
+            style={{ backgroundImage: `url(${resolveAssetUrl(s.image_url)})` }}
+          />
+        ))}
+        <div className="home-hero__overlay" />
+      </div>
       <div className="home-hero__content">
         <h1 className="home-hero__title">{slide.title || 'THE GINGER EXPERTS'}</h1>
         {slide.caption && <p className="home-hero__lead">{slide.caption}</p>}

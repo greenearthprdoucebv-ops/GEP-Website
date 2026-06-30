@@ -554,11 +554,21 @@ function CatalogueSection() {
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead><tr>
-              <th>Title</th><th>Origin</th><th>Price</th><th>Availability</th><th>Tag</th><th></th>
+              <th>Image</th><th>Title</th><th>Origin</th><th>Price</th><th>Availability</th><th>Tag</th><th></th>
             </tr></thead>
             <tbody>
               {rows.map(row => (
                 <tr key={row.id}>
+                  <td>
+                    {row.image_url ? (
+                      <img
+                        src={productImageUrl(row.image_url)}
+                        alt=""
+                        style={{ width: 56, height: 40, objectFit: 'cover', borderRadius: 6, display: 'block' }}
+                        onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+                      />
+                    ) : <span style={{ color: '#aaa', fontSize: '0.75rem' }}>No image</span>}
+                  </td>
                   <td>{row.title}</td>
                   <td>{row.origin ?? '—'}</td>
                   <td>{row.price ? `€${row.price}` : '—'}</td>

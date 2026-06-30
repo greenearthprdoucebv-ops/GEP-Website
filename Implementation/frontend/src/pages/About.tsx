@@ -4,7 +4,7 @@ import farmFamilyImg from '../assets/about/farm-family.jpg'
 import gingerHarvestImg from '../assets/about/ginger-harvest.jpeg'
 import gingerFieldImg from '../assets/about/ginger-field.jpg'
 import teamBannerImg from '../assets/about/team-banner.jpeg'
-import { supabase, supabaseConfigError } from '../lib/supabase'
+import { supabase } from '../lib/supabase'
 import { resolveAssetUrl } from '../lib/productImage'
 
 function LeafIcon() {
@@ -101,88 +101,19 @@ type AboutContent = {
     team_para3: string
 }
 
-const STATIC: AboutContent = {
-    hero_title: 'About GreenEarth Produce',
-    hero_para1: 'Green Earth Produce B.V. was established in Venlo, the Netherlands, with a strong focus on fresh ginger. Our team brings nearly 30 years of experience in the ginger industry, covering cultivation, sourcing, processing, packaging, distribution, and international trade. Over the years, we have built long-term and stable partnerships with professional growers and packing facilities in China. This enables us to supply both organic ginger and GlobalG.A.P.-certified conventional ginger that complies with EU Maximum Residue Levels (MRL) requirements.',
-    hero_para2: 'Our expertise covers the entire supply chain, including cultivation management, sourcing, production, quality control, food safety management, and international logistics. Since the beginning, we have remained committed to one clear goal: building the shortest possible supply chain to deliver premium products, consistent quality, and reliable year-round supply to our customers.',
-    hero_para3: 'Today, we supply supermarkets, wholesalers, foodservice companies, and food retailers throughout Europe. In addition to fresh ginger, we also offer value-added services such as repacking, processing, and customized labeling. Our mission remains unchanged — to provide reliable quality, stable supply, and professional service to our customers.',
-    values_subtitle: 'The principles that shape the way we work',
-    value1_title: 'Quality', value1_body: 'We value freshness, consistency, and product standards that support long-term trust.', value1_icon: 'leaf',
-    value2_title: 'Reliability', value2_body: 'We focus on dependable coordination between sourcing, supply, and customer needs.', value2_icon: 'clock',
-    value3_title: 'Partnership', value3_body: 'Strong business relationships are essential to building stable and effective produce networks.', value3_icon: 'handshake',
-    value4_title: 'Efficiency', value4_body: 'We aim for practical, well-organized processes that support smooth distribution and delivery.', value4_icon: 'box',
-    story_title: 'From Source to Market',
-    story_para1: 'We work closely with carefully selected growers and production farms in China, Peru, Brazil, and Thailand. These partners operate their own ginger farms and have extensive cultivation experience and expertise.',
-    story_para2: 'Our long-term partnerships enable us to ensure full traceability, consistent quality, and reliable year-round supply. We know our partners, and we trust their quality. We strongly believe that close cooperation at origin is the key to delivering premium ginger to the European market.',
-    story_para3: 'At Green Earth Produce, we believe in keeping things simple and fresh — every day. That is a promise our customers can count on.',
-    focus_subtitle: 'Key areas that define our daily work',
-    focus1_title: 'Fresh Produce', focus1_body: 'Fruit and vegetable products handled with attention to quality and consistency.',
-    focus2_title: 'Supply Coordination', focus2_body: 'Supporting the connection between sourcing, distribution, and customer demand.',
-    focus3_title: 'Business Relationships', focus3_body: 'Building dependable cooperation with partners across the produce chain.',
-    focus4_title: 'Market Awareness', focus4_body: 'Responding to product, timing, and supply expectations in a practical way.',
-    approach_title: 'A Responsible Approach',
-    approach_para: 'GreenEarth Produce values professional and responsible ways of working. In a sector where quality, timing, and product handling are essential, careful coordination and efficient processes play an important role in supporting reliable supply.',
-    approach_check1: 'Focus on product quality and consistency',
-    approach_check2: 'Clear coordination across the supply chain',
-    approach_check3: 'Attention to efficient distribution processes',
-    approach_check4: 'Commitment to dependable business relationships',
-    team_title: 'Our Team',
-    team_para1: 'For over 30 years, GEP team has specialized in ginger supply chain management, building expertise that spans the entire value chain — from cultivation and sourcing to food safety, quality control, logistics, and global distribution.',
-    team_para2: 'Driven by professionalism, dedication, and attention to detail, we are committed to ensuring product quality, supply stability, and operational excellence at every step.',
-    team_para3: 'More than a supplier, we are a strategic supply chain solutions partner. We work closely with our customers to deliver not only premium ginger products, but also reliable, efficient, and sustainable supply chain solutions that support long-term business growth.',
-}
+// Content is fully managed via Supabase (about_content table, seeded with defaults).
 
 export function About() {
-    const [email, setEmail] = useState('')
-    const [statusMessage, setStatusMessage] = useState('')
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [content, setContent] = useState<AboutContent>(STATIC)
+    const [content, setContent] = useState<AboutContent | null>(null)
 
     useEffect(() => {
         if (!supabase) return
         supabase.from('about_content').select('*').limit(1).single().then(({ data }) => {
-            if (data) {
-                const merged = { ...STATIC, ...data }
-                // resolve storage paths for images
-                if (data.hero_image_url)     merged.hero_image_url     = data.hero_image_url
-                if (data.story_image_url)    merged.story_image_url    = data.story_image_url
-                if (data.approach_image_url) merged.approach_image_url = data.approach_image_url
-                if (data.team_banner_url)    merged.team_banner_url    = data.team_banner_url
-                setContent(merged)
-            }
+            if (data) setContent(data)
         })
     }, [])
 
-    async function handleNewsletterSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        setIsSubmitting(true)
-        setStatusMessage('')
-
-        if (!supabase) {
-            setStatusMessage(supabaseConfigError ?? 'Newsletter service is not configured.')
-            setIsSubmitting(false)
-            return
-        }
-
-        try {
-            const { data, error } = await supabase.functions.invoke('newsletter-subscribe', {
-                body: { email },
-            })
-
-            if (error) {
-                setStatusMessage(error.message || 'Subscription failed. Please try again.')
-                return
-            }
-
-            setStatusMessage(data?.message ?? 'Please check your inbox and confirm your subscription.')
-            setEmail('')
-        } catch {
-            setStatusMessage('The subscription service is currently unavailable.')
-        } finally {
-            setIsSubmitting(false)
-        }
-    }
-
+    if (!content) return null
     const c = content
 
     return (
@@ -285,27 +216,6 @@ export function About() {
                         <p>{c.team_para2}</p>
                         <p>{c.team_para3}</p>
                     </article>
-                </div>
-            </section>
-
-            <section className="about-section about-newsletter">
-                <div className="about-newsletter__box">
-                    <h2>Stay Connected</h2>
-                    <p>Follow GreenEarth Produce for updates, product information, and company developments.</p>
-                    <p className="about-newsletter__subtext">Stay informed about our work in the fresh produce sector.</p>
-                    <form className="about-newsletter__form" onSubmit={handleNewsletterSubmit}>
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            required
-                        />
-                        <button type="submit" className="about-btn about-btn--accent" disabled={isSubmitting}>
-                            {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-                        </button>
-                    </form>
-                    {statusMessage && <p className="about-newsletter__status">{statusMessage}</p>}
                 </div>
             </section>
         </div>

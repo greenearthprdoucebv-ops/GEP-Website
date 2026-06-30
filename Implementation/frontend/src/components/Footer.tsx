@@ -18,13 +18,6 @@ function IconLinkedIn() {
   )
 }
 
-function IconFacebook() {
-  return (
-    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor">
-      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z" />
-    </svg>
-  )
-}
 
 export function Footer() {
   return (
@@ -39,16 +32,13 @@ export function Footer() {
               Venrayseweg 118 C, 5928 RH Venlo
             </a>
             <br />
-            +31 77 206 6760
+            <a href="tel:+31772066760" className="site-footer__link" aria-label="Call us">+31 77 206 6760</a>
           </p>
           <div className="site-footer__socials" aria-label="Social media">
             <a className="site-footer__social" href="https://www.instagram.com/greenearthproducebv/" target="_blank" rel="noreferrer" aria-label="Instagram">
               <IconInstagram />
             </a>
-            <a className="site-footer__social" href="https://facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">
-              <IconFacebook />
-            </a>
-            <a className="site-footer__social" href="https://www.linkedin.com/in/green-earth-produce-b-v-35a570371/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+<a className="site-footer__social" href="https://www.linkedin.com/in/green-earth-produce-b-v-35a570371/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
               <IconLinkedIn />
             </a>
           </div>
