@@ -43,8 +43,9 @@
 .product-slideshow__image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
+  background: #f4f7f5;
 }
 
 .product-slideshow__text {

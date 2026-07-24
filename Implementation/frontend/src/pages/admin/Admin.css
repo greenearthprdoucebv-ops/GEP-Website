@@ -63,7 +63,7 @@
 .admin-field input:focus,
 .admin-field textarea:focus,
 .admin-field select:focus {
-  border-color: #f4f7f5;
+  border-color: #2ecc8a;
   box-shadow: 0 0 0 3px rgba(46, 204, 138, 0.12);
 }
 
@@ -147,7 +147,7 @@
   justify-content: space-between;
   padding: 0 32px;
   height: 60px;
-  background: #ffffff;
+  background: #0d2015;
   flex-shrink: 0;
 }
 
@@ -158,8 +158,9 @@
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1.05rem;
   font-weight: 400;
-  color: #ffffff;
+  color: #fff;
   letter-spacing: 0.06em;
+  text-decoration: none;
 }
 
 .admin-header__logo {
@@ -200,7 +201,7 @@
 .admin-tab-btn--active {
   color: #0d2015;
   font-weight: 600;
-  border-bottom-color: #f4f7f5;
+  border-bottom-color: #2ecc8a;
 }
 
 .admin-main {
@@ -310,9 +311,9 @@
   cursor: default;
 }
 
-.admin-badge--active  { background: rgba(46, 204, 138, 0.12); color: #f4f7f5; }
+.admin-badge--active  { background: rgba(46, 204, 138, 0.15); color: #065f46; }
 .admin-badge--inactive { background: rgba(0, 0, 0, 0.06);      color: #7aaa8e; }
-.admin-badge--current { background: rgba(46, 204, 138, 0.12); color: #f4f7f5; }
+.admin-badge--current { background: rgba(46, 204, 138, 0.15); color: #065f46; }
 .admin-badge--archived { background: rgba(0, 0, 0, 0.06);      color: #7aaa8e; }
 
 .admin-badge--clickable { cursor: pointer; transition: opacity 0.18s; }
@@ -410,7 +411,7 @@
 .admin-checkbox-row input[type='checkbox'] {
   width: 16px;
   height: 16px;
-  accent-color: #f4f7f5;
+  accent-color: #2ecc8a;
   cursor: pointer;
   flex-shrink: 0;
 }
